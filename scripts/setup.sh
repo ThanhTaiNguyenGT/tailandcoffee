@@ -79,6 +79,20 @@ while true; do
   warn "Password không khớp, vui lòng nhập lại."
 done
 
+# GitHub Sync (tuỳ chọn)
+echo ""
+echo -e "${BOLD}GitHub Sync${NC} ${YELLOW}(tuỳ chọn — để tự động push dữ liệu lên GitHub)${NC}"
+echo -e "  Tạo token tại: ${CYAN}https://github.com/settings/tokens/new${NC}"
+echo -e "  Tick quyền: ${BOLD}repo → Contents (read & write)${NC}"
+read -rp "→ GitHub Personal Access Token (nhấn Enter để bỏ qua): " GITHUB_TOKEN
+GITHUB_TOKEN="${GITHUB_TOKEN:-}"
+if [ -n "$GITHUB_TOKEN" ]; then
+  read -rp "→ GitHub username [ThanhTaiNguyenGT]: " GITHUB_OWNER
+  GITHUB_OWNER="${GITHUB_OWNER:-ThanhTaiNguyenGT}"
+  read -rp "→ Tên repo [tailandcoffee]: " GITHUB_REPO
+  GITHUB_REPO="${GITHUB_REPO:-tailandcoffee}"
+fi
+
 # Session secret (tự tạo ngẫu nhiên)
 SESSION_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9!@#$%^&*' | fold -w 64 | head -n 1)
 
@@ -189,6 +203,20 @@ SESSION_SECRET=$SESSION_SECRET
 ADMIN_USERNAME=$ADMIN_USER
 ADMIN_PASSWORD=$ADMIN_PASS
 EOF
+
+# Thêm GitHub config nếu có token
+if [ -n "$GITHUB_TOKEN" ]; then
+  cat >> "$APP_DIR/.env" <<EOF
+
+GITHUB_TOKEN=$GITHUB_TOKEN
+GITHUB_OWNER=$GITHUB_OWNER
+GITHUB_REPO=$GITHUB_REPO
+GITHUB_BRANCH=main
+EOF
+  log "GitHub Sync đã cấu hình ($GITHUB_OWNER/$GITHUB_REPO)"
+else
+  warn "Bỏ qua GitHub Sync — có thể cấu hình sau trong .env"
+fi
 
 chmod 600 "$APP_DIR/.env"
 log "File .env đã tạo (bảo mật 600)"

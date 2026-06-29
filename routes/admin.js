@@ -1,14 +1,33 @@
 const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const path = require('path');
+const router  = express.Router();
+const fs      = require('fs');
+const path    = require('path');
 const { requireAdmin } = require('../middleware/auth');
+const github  = require('../services/github');
 
-const menuPath = path.join(__dirname, '../data/menu.json');
-const blogPath = path.join(__dirname, '../data/blog.json');
+const menuPath     = path.join(__dirname, '../data/menu.json');
+const blogPath     = path.join(__dirname, '../data/blog.json');
 const bookingsPath = path.join(__dirname, '../data/bookings.json');
+const branchesPath = path.join(__dirname, '../data/branches.json');
 
-// Login
+// ── Helper: đọc JSON ──
+const readJSON  = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
+const writeJSON = (p, d) => fs.writeFileSync(p, JSON.stringify(d, null, 2));
+
+// ── Helper: sync lên GitHub (không block response nếu lỗi) ──
+async function syncToGitHub(filename, data, message) {
+  const result = await github.pushFile(filename, data, message);
+  if (!result.success) {
+    console.warn(`[GitHub Sync] ${filename}: ${result.error}`);
+  } else {
+    console.log(`[GitHub Sync] ${filename} → commit ${result.commit}`);
+  }
+  return result;
+}
+
+// ════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════
 router.get('/login', (req, res) => {
   if (req.session.isAdmin) return res.redirect('/admin');
   res.render('admin/login', { title: 'Admin — TaiLand Cafe' });
@@ -30,96 +49,168 @@ router.post('/logout', requireAdmin, (req, res) => {
   res.redirect('/admin/login');
 });
 
-// Dashboard
-router.get('/', requireAdmin, (req, res) => {
-  const menu = JSON.parse(fs.readFileSync(menuPath, 'utf8'));
-  const blog = JSON.parse(fs.readFileSync(blogPath, 'utf8'));
-  const bookings = JSON.parse(fs.readFileSync(bookingsPath, 'utf8'));
-  const branchData = require('../data/branches.json');
+// ════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════
+router.get('/', requireAdmin, async (req, res) => {
+  const menu     = readJSON(menuPath);
+  const blog     = readJSON(blogPath);
+  const bookings = readJSON(bookingsPath);
+  const branches = readJSON(branchesPath);
+
+  // Kiểm tra kết nối GitHub (không cần await — hiển thị async)
+  const ghStatus = await github.checkConnection().catch(() => ({ connected: false, error: 'Timeout' }));
+
   res.render('admin/dashboard', {
     title: 'Dashboard — Admin TaiLand',
     stats: {
-      menuItems: menu.items.length,
-      blogPosts: blog.posts.length,
-      totalBookings: bookings.length,
+      menuItems      : menu.items.length,
+      blogPosts      : blog.posts.length,
+      totalBookings  : bookings.length,
       pendingBookings: bookings.filter(b => b.status === 'pending').length,
-      branches: branchData.branches.length
-    }
+      branches       : branches.branches.length,
+    },
+    ghStatus,
   });
 });
 
-// ── BOOKINGS ──
+// ── Manual sync all files ──
+router.post('/sync', requireAdmin, async (req, res) => {
+  const results = [];
+
+  const menu     = readJSON(menuPath);
+  const blog     = readJSON(blogPath);
+  const branches = readJSON(branchesPath);
+  const bookings = readJSON(bookingsPath);
+
+  const jobs = [
+    syncToGitHub('menu.json',     menu,     '[Admin] Sync menu.json'),
+    syncToGitHub('blog.json',     blog,     '[Admin] Sync blog.json'),
+    syncToGitHub('branches.json', branches, '[Admin] Sync branches.json'),
+    syncToGitHub('bookings.json', bookings, '[Admin] Sync bookings.json'),
+  ];
+
+  const settled = await Promise.allSettled(jobs);
+  settled.forEach((r, i) => {
+    const names = ['menu.json','blog.json','branches.json','bookings.json'];
+    results.push({ file: names[i], ...(r.value || { success: false, error: r.reason?.message }) });
+  });
+
+  const allOk = results.every(r => r.success);
+  if (allOk) {
+    req.flash('success', `✓ Đã sync ${results.length} files lên GitHub thành công!`);
+  } else {
+    const failed = results.filter(r => !r.success).map(r => r.file).join(', ');
+    req.flash('error', `Sync thất bại: ${failed}. Kiểm tra GITHUB_TOKEN trong .env`);
+  }
+  res.redirect('/admin');
+});
+
+// ════════════════════════════════════════
+//  BOOKINGS
+// ════════════════════════════════════════
 router.get('/bookings', requireAdmin, (req, res) => {
-  const bookings = JSON.parse(fs.readFileSync(bookingsPath, 'utf8'));
+  const bookings = readJSON(bookingsPath);
   res.render('admin/bookings', {
-    title: 'Quản lý đặt bàn — Admin TaiLand',
-    bookings: bookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    title   : 'Quản lý đặt bàn — Admin TaiLand',
+    bookings: bookings.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
   });
 });
 
-router.post('/bookings/:id/status', requireAdmin, (req, res) => {
-  const bookings = JSON.parse(fs.readFileSync(bookingsPath, 'utf8'));
+router.post('/bookings/:id/status', requireAdmin, async (req, res) => {
+  const bookings = readJSON(bookingsPath);
   const idx = bookings.findIndex(b => b.id === parseInt(req.params.id));
   if (idx !== -1) bookings[idx].status = req.body.status;
-  fs.writeFileSync(bookingsPath, JSON.stringify(bookings, null, 2));
+  writeJSON(bookingsPath, bookings);
+
+  // Sync lên GitHub (background, không chờ)
+  syncToGitHub('bookings.json', bookings, `[Admin] Cập nhật trạng thái booking #${req.params.id}`);
+
   req.flash('success', 'Cập nhật trạng thái thành công');
   res.redirect('/admin/bookings');
 });
 
-router.post('/bookings/:id/delete', requireAdmin, (req, res) => {
-  let bookings = JSON.parse(fs.readFileSync(bookingsPath, 'utf8'));
+router.post('/bookings/:id/delete', requireAdmin, async (req, res) => {
+  let bookings = readJSON(bookingsPath);
   bookings = bookings.filter(b => b.id !== parseInt(req.params.id));
-  fs.writeFileSync(bookingsPath, JSON.stringify(bookings, null, 2));
+  writeJSON(bookingsPath, bookings);
+
+  syncToGitHub('bookings.json', bookings, `[Admin] Xóa booking #${req.params.id}`);
+
   req.flash('success', 'Đã xóa đặt bàn');
   res.redirect('/admin/bookings');
 });
 
-// ── MENU ──
+// ════════════════════════════════════════
+//  MENU
+// ════════════════════════════════════════
 router.get('/menu', requireAdmin, (req, res) => {
-  const menu = JSON.parse(fs.readFileSync(menuPath, 'utf8'));
+  const menu = readJSON(menuPath);
   res.render('admin/menu', {
-    title: 'Quản lý menu — Admin TaiLand',
+    title     : 'Quản lý menu — Admin TaiLand',
     categories: menu.categories,
-    items: menu.items
+    items     : menu.items,
   });
 });
 
-router.post('/menu/add', requireAdmin, (req, res) => {
-  const menu = JSON.parse(fs.readFileSync(menuPath, 'utf8'));
-  const { category, name_vi, name_en, desc_vi, desc_en, price, featured } = req.body;
-  menu.items.push({
-    id: Date.now(),
-    category, name_vi, name_en, desc_vi, desc_en,
-    price: parseInt(price),
-    image: '/images/menu/default.jpg',
+router.post('/menu/add', requireAdmin, async (req, res) => {
+  const menu = readJSON(menuPath);
+  const { category, name_vi, name_en, desc_vi, desc_en, price, featured, tag_vi, tag_en } = req.body;
+
+  const newItem = {
+    id      : Date.now(),
+    category,
+    name_vi, name_en,
+    desc_vi, desc_en,
+    price   : parseInt(price),
+    image   : '/images/menu/default.jpg',
     featured: featured === 'on',
-    tag_vi: '', tag_en: ''
-  });
-  fs.writeFileSync(menuPath, JSON.stringify(menu, null, 2));
-  req.flash('success', 'Thêm món thành công');
+    tag_vi  : tag_vi  || '',
+    tag_en  : tag_en  || '',
+  };
+  menu.items.push(newItem);
+  writeJSON(menuPath, menu);
+
+  // Sync lên GitHub ngay lập tức
+  const gh = await syncToGitHub('menu.json', menu, `[Admin] Thêm món: ${name_vi}`);
+  if (gh.success) {
+    req.flash('success', `✓ Thêm "${name_vi}" thành công & đã sync lên GitHub (commit ${gh.commit})`);
+  } else {
+    req.flash('success', `✓ Thêm "${name_vi}" thành công (chưa sync GitHub: ${gh.error})`);
+  }
   res.redirect('/admin/menu');
 });
 
-router.post('/menu/:id/delete', requireAdmin, (req, res) => {
-  const menu = JSON.parse(fs.readFileSync(menuPath, 'utf8'));
+router.post('/menu/:id/delete', requireAdmin, async (req, res) => {
+  const menu = readJSON(menuPath);
+  const item = menu.items.find(i => i.id === parseInt(req.params.id));
   menu.items = menu.items.filter(i => i.id !== parseInt(req.params.id));
-  fs.writeFileSync(menuPath, JSON.stringify(menu, null, 2));
-  req.flash('success', 'Đã xóa món');
+  writeJSON(menuPath, menu);
+
+  const gh = await syncToGitHub('menu.json', menu, `[Admin] Xóa món: ${item?.name_vi || req.params.id}`);
+  if (gh.success) {
+    req.flash('success', `✓ Đã xóa món & sync lên GitHub (commit ${gh.commit})`);
+  } else {
+    req.flash('success', `✓ Đã xóa món (chưa sync GitHub: ${gh.error})`);
+  }
   res.redirect('/admin/menu');
 });
 
-// ── BLOG ──
+// ════════════════════════════════════════
+//  BLOG
+// ════════════════════════════════════════
 router.get('/blog', requireAdmin, (req, res) => {
-  const blog = JSON.parse(fs.readFileSync(blogPath, 'utf8'));
+  const blog = readJSON(blogPath);
   res.render('admin/blog', {
     title: 'Quản lý blog — Admin TaiLand',
-    posts: blog.posts
+    posts: blog.posts,
   });
 });
 
-router.post('/blog/add', requireAdmin, (req, res) => {
-  const blog = JSON.parse(fs.readFileSync(blogPath, 'utf8'));
+router.post('/blog/add', requireAdmin, async (req, res) => {
+  const blog = readJSON(blogPath);
   const { title_vi, title_en, excerpt_vi, excerpt_en, content_vi, content_en, author, category_vi, category_en } = req.body;
+
   const slug = title_vi.toLowerCase()
     .replace(/[áàảãạăắặẳẵặâấầẩẫậ]/g, 'a')
     .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
@@ -131,25 +222,41 @@ router.post('/blog/add', requireAdmin, (req, res) => {
     .replace(/\s+/g, '-')
     .replace(/[^a-z0-9-]/g, '')
     + '-' + Date.now();
+
   blog.posts.unshift({
     id: Date.now(), slug,
-    title_vi, title_en, excerpt_vi, excerpt_en,
-    content_vi, content_en, author,
-    date: new Date().toISOString().split('T')[0],
+    title_vi, title_en,
+    excerpt_vi, excerpt_en,
+    content_vi, content_en,
+    author,
+    date        : new Date().toISOString().split('T')[0],
     category_vi, category_en,
-    image: '/images/blog/default.jpg',
-    featured: false
+    image       : '/images/blog/default.jpg',
+    featured    : false,
   });
-  fs.writeFileSync(blogPath, JSON.stringify(blog, null, 2));
-  req.flash('success', 'Đăng bài thành công');
+  writeJSON(blogPath, blog);
+
+  const gh = await syncToGitHub('blog.json', blog, `[Admin] Đăng bài: ${title_vi}`);
+  if (gh.success) {
+    req.flash('success', `✓ Đăng bài thành công & đã sync lên GitHub (commit ${gh.commit})`);
+  } else {
+    req.flash('success', `✓ Đăng bài thành công (chưa sync GitHub: ${gh.error})`);
+  }
   res.redirect('/admin/blog');
 });
 
-router.post('/blog/:id/delete', requireAdmin, (req, res) => {
-  const blog = JSON.parse(fs.readFileSync(blogPath, 'utf8'));
+router.post('/blog/:id/delete', requireAdmin, async (req, res) => {
+  const blog = readJSON(blogPath);
+  const post = blog.posts.find(p => p.id === parseInt(req.params.id));
   blog.posts = blog.posts.filter(p => p.id !== parseInt(req.params.id));
-  fs.writeFileSync(blogPath, JSON.stringify(blog, null, 2));
-  req.flash('success', 'Đã xóa bài viết');
+  writeJSON(blogPath, blog);
+
+  const gh = await syncToGitHub('blog.json', blog, `[Admin] Xóa bài: ${post?.title_vi || req.params.id}`);
+  if (gh.success) {
+    req.flash('success', `✓ Đã xóa bài & sync lên GitHub (commit ${gh.commit})`);
+  } else {
+    req.flash('success', `✓ Đã xóa bài (chưa sync GitHub: ${gh.error})`);
+  }
   res.redirect('/admin/blog');
 });
 
