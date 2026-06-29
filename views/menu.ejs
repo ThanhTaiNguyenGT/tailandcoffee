@@ -30,7 +30,13 @@
     <% } else { %>
     <div class="menu-grid">
       <% items.forEach((item, i) => { %>
-      <article class="menu-card sr" style="transition-delay:<%= (i % 4) * 70 %>ms" data-category="<%= item.category %>">
+      <article class="menu-card sr" style="transition-delay:<%= (i % 4) * 70 %>ms"
+        data-category="<%= item.category %>"
+        data-item-id="<%= item.id %>"
+        data-name-vi="<%= item.name_vi %>"
+        data-name-en="<%= item.name_en %>"
+        data-price="<%= item.price %>"
+        data-category="<%= item.category %>">
         <div class="menu-card-img" role="img" aria-label="<%= lang === 'vi' ? item.name_vi : item.name_en %>">
           <%- getCoffeeIllustration(item.category, i) %>
         </div>
