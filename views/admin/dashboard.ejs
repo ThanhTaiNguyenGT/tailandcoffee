@@ -1,165 +1,131 @@
-<%- include('../partials/admin-header', { pageTitle: 'Dashboard' }) %>
+﻿<%- include('../partials/admin-header', { pageTitle: 'Dashboard', pendingBookings: stats.pendingBookings }) %>
 
-<div class="admin-content">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px">
-    <h1 class="admin-page-title" style="margin:0">Dashboard</h1>
-    <div style="display:flex;align-items:center;gap:10px">
-      <!-- GitHub Status Badge -->
-      <div class="gh-status-badge <%= ghStatus.connected ? 'gh-ok' : 'gh-err' %>">
-        <% if (ghStatus.connected) { %>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          GitHub: <strong><%= ghStatus.user %></strong> — Đã kết nối
-        <% } else { %>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          GitHub: Chưa kết nối
-        <% } %>
-      </div>
-
-      <!-- Sync All button -->
-      <form action="/admin/sync" method="POST" style="margin:0">
-        <button type="submit" class="btn btn-sm"
-          style="background:#24292f;color:#fff;display:inline-flex;align-items:center;gap:7px"
-          onclick="this.disabled=true;this.innerHTML='Đang sync...'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-          Sync tất cả lên GitHub
-        </button>
-      </form>
-    </div>
+<div class="adm-page-header">
+  <div>
+    <h1 class="adm-page-title">Dashboard</h1>
+    <p class="adm-page-subtitle">Tổng quan hoạt động TaiLand Cafe</p>
   </div>
-
-  <% if (success && success.length) { %>
-  <div class="flash flash-success">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-    <%= success[0] %>
-  </div>
-  <% } %>
-  <% if (error && error.length) { %>
-  <div class="flash flash-error">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <%= error[0] %>
-  </div>
-  <% } %>
-
-  <!-- Stats -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-card-label">Đặt bàn chờ xử lý</div>
-      <div class="stat-card-val"><%= stats.pendingBookings %></div>
-      <div class="stat-card-sub">/ <%= stats.totalBookings %> tổng cộng</div>
+  <div class="adm-page-actions">
+    <div class="adm-gh-badge <%= ghStatus.connected ? 'ok' : 'err' %>">
+      <span class="adm-gh-dot"></span>
+      <% if (ghStatus.connected) { %>GitHub: <strong><%= ghStatus.user %></strong><% } else { %>GitHub: Chưa kết nối<% } %>
     </div>
-    <div class="stat-card">
-      <div class="stat-card-label">Món trong menu</div>
-      <div class="stat-card-val"><%= stats.menuItems %></div>
-      <div class="stat-card-sub">Cà phê · Trà sữa · Sinh tố · Bánh</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-card-label">Bài blog</div>
-      <div class="stat-card-val"><%= stats.blogPosts %></div>
-      <div class="stat-card-sub">Song ngữ VI / EN</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-card-label">Chi nhánh</div>
-      <div class="stat-card-val"><%= stats.branches %></div>
-      <div class="stat-card-sub">Đang hoạt động</div>
-    </div>
-  </div>
-
-  <!-- GitHub Sync Guide (hiển thị khi chưa kết nối) -->
-  <% if (!ghStatus.connected) { %>
-  <div class="admin-card" style="margin-bottom:20px;border-left:3px solid #f59e0b">
-    <div class="admin-card-header">
-      <span class="admin-card-title" style="color:#92400e">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:6px" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        GitHub chưa kết nối — Dữ liệu chưa tự động sync
-      </span>
-    </div>
-    <div class="admin-card-body" style="font-size:.875rem;line-height:1.7">
-      <p style="margin-bottom:12px">Để thêm món / blog và tự động lưu lên GitHub, thêm 4 dòng này vào file <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px">.env</code> trên server:</p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;font-size:.82rem;overflow-x:auto;margin-bottom:12px">GITHUB_TOKEN=ghp_xxxxxxxxxxxx
-GITHUB_OWNER=ThanhTaiNguyenGT
-GITHUB_REPO=tailandcoffee
-GITHUB_BRANCH=main</pre>
-      <p>
-        Tạo token tại:
-        <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener"
-           style="color:#3b82f6;text-decoration:underline">
-          github.com/settings/tokens/new
-        </a>
-        → tick <strong>repo → Contents (read &amp; write)</strong> → Generate token
-      </p>
-      <p style="margin-top:8px;color:#6b7280">Sau khi thêm vào .env: <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px">pm2 restart tailand-cafe</code></p>
-    </div>
-  </div>
-  <% } %>
-
-  <!-- Quick Actions -->
-  <div class="admin-card">
-    <div class="admin-card-header">
-      <span class="admin-card-title">Quick Actions</span>
-    </div>
-    <div class="admin-card-body">
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a href="/admin/menu" class="btn btn-sm btn-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>
-          Quản lý Menu
-        </a>
-        <a href="/admin/bookings" class="btn btn-sm btn-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Đặt bàn
-          <% if (stats.pendingBookings > 0) { %>
-          <span style="background:#ef4444;color:#fff;border-radius:999px;padding:1px 7px;font-size:.7rem;font-weight:700"><%= stats.pendingBookings %></span>
-          <% } %>
-        </a>
-        <a href="/admin/blog" class="btn btn-sm btn-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Viết Blog
-        </a>
-        <a href="/?lang=vi" target="_blank" rel="noopener" class="btn btn-sm btn-outline">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Xem website
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- GitHub Sync Flow diagram -->
-  <div class="admin-card" style="margin-top:20px">
-    <div class="admin-card-header">
-      <span class="admin-card-title">Luồng đồng bộ dữ liệu</span>
-    </div>
-    <div class="admin-card-body">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.85rem">
-        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 16px;color:#166534;font-weight:600">
-          Admin thêm món
-        </div>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 16px;color:#1e40af;font-weight:600">
-          Lưu file JSON<br><span style="font-weight:400;font-size:.78rem">data/menu.json</span>
-        </div>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        <div style="background:#24292f;border-radius:8px;padding:10px 16px;color:#fff;font-weight:600">
-          Push lên GitHub<br><span style="font-weight:400;font-size:.78rem;color:#9ca3af">auto commit</span>
-        </div>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:10px 16px;color:#92400e;font-weight:600">
-          Website hiển thị<br><span style="font-weight:400;font-size:.78rem">tức thì</span>
-        </div>
-      </div>
-      <p style="margin-top:14px;font-size:.8rem;color:#6b7280">
-        Khi deploy server mới: <code style="background:#f3f4f6;padding:2px 6px;border-radius:4px">git pull origin main</code> sẽ lấy luôn data mới nhất từ GitHub.
-      </p>
-    </div>
+    <form action="/admin/sync" method="POST" style="margin:0">
+      <button type="submit" class="adm-btn adm-btn-github" onclick="this.disabled=true;this.textContent='Đang sync...'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        Sync GitHub
+      </button>
+    </form>
   </div>
 </div>
 
-<style>
-.gh-status-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 6px 14px; border-radius: 999px;
-  font-size: .8rem; font-weight: 500;
-}
-.gh-ok  { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-.gh-err { background: #fef9ee; color: #92400e; border: 1px solid #fde68a; }
-</style>
+<div class="adm-stats-grid">
+  <div class="adm-stat">
+    <div class="adm-stat-header">
+      <div class="adm-stat-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <% if (stats.pendingBookings > 0) { %><span class="adm-stat-trend warn"><%= stats.pendingBookings %> cho</span><% } else { %><span class="adm-stat-trend neu">OK</span><% } %>
+    </div>
+    <div class="adm-stat-val"><%= stats.totalBookings %></div>
+    <div class="adm-stat-label">Tong dat ban</div>
+    <div class="adm-stat-sub"><%= stats.pendingBookings %> cho xu ly</div>
+  </div>
+  <div class="adm-stat">
+    <div class="adm-stat-header">
+      <div class="adm-stat-icon gold"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg></div>
+      <span class="adm-stat-trend up">Active</span>
+    </div>
+    <div class="adm-stat-val"><%= stats.menuItems %></div>
+    <div class="adm-stat-label">Mon trong menu</div>
+    <div class="adm-stat-sub">Ca phe - Tra sua - Sinh to - Banh</div>
+  </div>
+  <div class="adm-stat">
+    <div class="adm-stat-header">
+      <div class="adm-stat-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+      <span class="adm-stat-trend neu">VI / EN</span>
+    </div>
+    <div class="adm-stat-val"><%= stats.blogPosts %></div>
+    <div class="adm-stat-label">Bai viet blog</div>
+    <div class="adm-stat-sub">Song ngu Viet - Anh</div>
+  </div>
+  <div class="adm-stat">
+    <div class="adm-stat-header">
+      <div class="adm-stat-icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <span class="adm-stat-trend up">Active</span>
+    </div>
+    <div class="adm-stat-val"><%= stats.branches %></div>
+    <div class="adm-stat-label">Chi nhanh</div>
+    <div class="adm-stat-sub">Dang hoat dong</div>
+  </div>
+</div>
+
+<% if (!ghStatus.connected) { %>
+<div class="adm-notice warn">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <div class="adm-notice-body">
+    <p><strong>GitHub chua ket noi</strong> - Them vao file <code>.env</code>:</p>
+    <pre>GITHUB_TOKEN=ghp_xxxxxxxxxxxx
+GITHUB_OWNER=ThanhTaiNguyenGT
+GITHUB_REPO=tailandcoffee
+GITHUB_BRANCH=main</pre>
+    <p>Tao token tai <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener">github.com/settings/tokens/new</a> - tick <strong>repo</strong> - Generate token - <code>pm2 restart tailand-cafe</code></p>
+  </div>
+</div>
+<% } %>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+  <div class="adm-card">
+    <div class="adm-card-header">
+      <span class="adm-card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Truy cap nhanh
+      </span>
+    </div>
+    <div class="adm-card-body">
+      <div class="adm-tiles">
+        <a href="/admin/menu" class="adm-tile">
+          <div class="adm-tile-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg></div>
+          <div class="adm-tile-label">Quan ly Menu</div>
+          <div class="adm-tile-sub"><%= stats.menuItems %> mon</div>
+        </a>
+        <a href="/admin/bookings" class="adm-tile">
+          <div class="adm-tile-icon" style="background:rgba(5,150,105,.1);color:#059669"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div class="adm-tile-label">Dat ban <% if (stats.pendingBookings > 0) { %><span class="adm-nav-badge" style="font-size:.62rem;padding:1px 6px;display:inline-flex"><%= stats.pendingBookings %></span><% } %></div>
+          <div class="adm-tile-sub"><%= stats.totalBookings %> tong cong</div>
+        </a>
+        <a href="/admin/blog" class="adm-tile">
+          <div class="adm-tile-icon" style="background:rgba(59,130,246,.1);color:#3B82F6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <div class="adm-tile-label">Viet Blog</div>
+          <div class="adm-tile-sub"><%= stats.blogPosts %> bai viet</div>
+        </a>
+        <a href="/?lang=vi" target="_blank" rel="noopener" class="adm-tile">
+          <div class="adm-tile-icon" style="background:rgba(139,92,246,.1);color:#8B5CF6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="adm-tile-label">Xem website</div>
+          <div class="adm-tile-sub">Mo tab moi</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card-header">
+      <span class="adm-card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        Luong dong bo GitHub
+      </span>
+    </div>
+    <div class="adm-card-body">
+      <div class="adm-flow" style="margin-bottom:14px">
+        <div class="adm-flow-step green">Admin them</div>
+        <svg class="adm-flow-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <div class="adm-flow-step blue">Luu JSON<span>data/*.json</span></div>
+        <svg class="adm-flow-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <div class="adm-flow-step dark">GitHub<span>auto commit</span></div>
+        <svg class="adm-flow-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <div class="adm-flow-step yellow">Website<span>cap nhat</span></div>
+      </div>
+      <p style="font-size:.78rem;color:var(--adm-text-3);line-height:1.6">Deploy server moi: <code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:.75rem">git pull origin main</code> lay ngay data moi nhat.</p>
+    </div>
+  </div>
+</div>
 
 <%- include('../partials/admin-footer') %>

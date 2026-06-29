@@ -1,49 +1,51 @@
 <!DOCTYPE html>
-<html lang="<%= lang %>">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login — TaiLand Cafe</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <style>
-    body { background: var(--c-primary); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .login-box { background: #fff; border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.2); }
-    .login-logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--c-primary); margin-bottom: 32px; justify-content: center; }
-    .login-title { font-size: 1.5rem; text-align: center; margin-bottom: 24px; color: var(--c-primary); }
-  </style>
+  <link rel="stylesheet" href="/css/admin.css" />
 </head>
-<body>
-<div class="login-box" role="main">
-  <div class="login-logo">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>
-    TaiLand Admin
-  </div>
-
-  <% if (error && error.length > 0) { %>
-  <div class="flash flash-error" role="alert" style="margin-bottom:20px">
-    <% error.forEach(m => { %><p><%= m %></p><% }) %>
-  </div>
-  <% } %>
-
-  <form action="/admin/login" method="POST">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" required autocomplete="username" autofocus>
+<body class="adm-body">
+<div class="adm-login-page">
+  <div class="adm-login-card">
+    <div class="adm-login-logo">
+      <div class="adm-login-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+      </div>
+      <div>
+        <div class="adm-login-logo-text">TaiLand</div>
+        <div class="adm-login-logo-sub">Admin Panel</div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required autocomplete="current-password">
+
+    <p class="adm-login-title">Đăng nhập để quản lý</p>
+
+    <% if (error && error.length > 0) { %>
+    <div class="adm-flash adm-flash-error" role="alert" style="border-radius:10px;margin-bottom:20px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span><%= error[0] %></span>
     </div>
-    <button type="submit" class="btn btn-accent btn-lg" style="width:100%;margin-top:8px">
-      Đăng nhập / Login
-    </button>
-  </form>
-  <div style="text-align:center;margin-top:20px">
-    <a href="/?lang=<%= lang %>" style="color:var(--c-text-muted);font-size:.85rem">← Về trang chủ / Back to site</a>
+    <% } %>
+
+    <form action="/admin/login" method="POST">
+      <div class="adm-form-group">
+        <label class="adm-label" for="username">Tài khoản</label>
+        <input class="adm-input" type="text" id="username" name="username" required autocomplete="username" autofocus placeholder="admin">
+      </div>
+      <div class="adm-form-group">
+        <label class="adm-label" for="password">Mật khẩu</label>
+        <input class="adm-input" type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <button type="submit" class="adm-btn adm-btn-accent adm-btn-lg" style="width:100%;justify-content:center;margin-top:8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Đăng nhập
+      </button>
+    </form>
+    <div style="text-align:center;margin-top:20px">
+      <a href="/?lang=vi" style="color:var(--adm-text-3);font-size:.8rem">← Về trang chủ</a>
+    </div>
   </div>
 </div>
-<script src="/js/main.js"></script>
 </body>
 </html>

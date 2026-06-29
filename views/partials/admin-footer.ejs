@@ -1,6 +1,27 @@
-  </main>
-</div>
+    </main>
+  </div><!-- .adm-main-wrap -->
+</div><!-- .adm-layout -->
 
-<script src="/js/main.js"></script>
+<script>
+// Sidebar toggle (mobile)
+document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+  document.getElementById('admSidebar').classList.toggle('open');
+});
+// Close sidebar on outside click (mobile)
+document.addEventListener('click', function(e) {
+  const sb = document.getElementById('admSidebar');
+  if (sb && sb.classList.contains('open') && !sb.contains(e.target) && !e.target.closest('#sidebarToggle')) {
+    sb.classList.remove('open');
+  }
+});
+// Auto-dismiss flash after 5s
+setTimeout(() => {
+  document.querySelectorAll('.adm-flash').forEach(el => {
+    el.style.transition = 'opacity .4s';
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 400);
+  });
+}, 5000);
+</script>
 </body>
 </html>
