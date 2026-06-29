@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<section class="section" style="min-height:60vh;display:flex;align-items:center">
+  <div class="container text-center">
+    <div style="font-size:5rem;margin-bottom:24px;line-height:1" aria-hidden="true">☕</div>
+    <h1 style="font-size:clamp(3rem,8vw,6rem);color:var(--c-primary);margin-bottom:8px">404</h1>
+    <h2 style="margin-bottom:16px">
+      <%= lang === 'vi' ? 'Ôi không, trang này đã... hết cà phê!' : 'Oops, this page ran out of coffee!' %>
+    </h2>
+    <p style="color:var(--c-text-muted);max-width:420px;margin:0 auto 32px">
+      <%= lang === 'vi'
+        ? 'Trang bạn tìm kiếm không tồn tại hoặc đã bị xóa. Hãy quay về trang chủ nhé!'
+        : 'The page you\'re looking for doesn\'t exist or has been removed. Let\'s head back home!' %>
+    </p>
+    <a href="/?lang=<%= lang %>" class="btn btn-accent btn-lg">
+      <%= lang === 'vi' ? '← Về trang chủ' : '← Back to Home' %>
+    </a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

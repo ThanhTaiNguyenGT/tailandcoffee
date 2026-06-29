@@ -1,0 +1,48 @@
+<%- include('../partials/admin-header', { pageTitle: 'Dashboard' }) %>
+
+<div class="admin-content">
+  <h1 class="admin-page-title">Dashboard</h1>
+
+  <div class="admin-stats">
+    <div class="stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-body">
+        <div class="stat-val"><%= stats.totalBookings %></div>
+        <div class="stat-label">Đặt bàn (<%= stats.pendingBookings %> chờ)</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">☕</div>
+      <div class="stat-body">
+        <div class="stat-val"><%= stats.menuItems %></div>
+        <div class="stat-label">Món trong menu</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📝</div>
+      <div class="stat-body">
+        <div class="stat-val"><%= stats.blogPosts %></div>
+        <div class="stat-label">Bài blog</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📍</div>
+      <div class="stat-body">
+        <div class="stat-val"><%= stats.branches %></div>
+        <div class="stat-label">Chi nhánh</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-quick-links">
+    <h2>Quick Actions</h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+      <a href="/admin/bookings" class="btn btn-outline">Xem đặt bàn mới</a>
+      <a href="/admin/menu" class="btn btn-outline">Quản lý menu</a>
+      <a href="/admin/blog" class="btn btn-outline">Quản lý blog</a>
+      <a href="/?lang=vi" target="_blank" class="btn btn-outline">Xem website →</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/admin-footer') %>

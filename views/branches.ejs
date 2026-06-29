@@ -1,0 +1,75 @@
+<%- include('partials/header') %>
+
+<section class="page-hero" aria-labelledby="branches-title">
+  <div class="container">
+    <span class="section-label" style="color:rgba(250,247,242,.6)"><%= lang === 'vi' ? 'Hệ thống chi nhánh' : 'Our Locations' %></span>
+    <h1 class="page-hero-title" id="branches-title"><%= lang === 'vi' ? 'Tìm TaiLand gần bạn' : 'Find TaiLand Near You' %></h1>
+    <p class="page-hero-subtitle"><%= lang === 'vi' ? 'Chúng tôi có mặt tại nhiều địa điểm thuận tiện trên khắp thành phố.' : 'We\'re conveniently located across the city.' %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="branches-grid">
+      <% branches.forEach((branch, i) => { %>
+      <article class="branch-card sr" style="transition-delay:<%= i * 100 %>ms">
+        <div class="branch-card-img" role="img" aria-label="<%= lang === 'vi' ? branch.name_vi : branch.name_en %>">
+          <%- getBranchIllustration(i) %>
+        </div>
+        <div class="branch-card-body">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+            <% if (branch.is_main) { %>
+            <span class="badge badge-accent"><%= lang === 'vi' ? 'Chi nhánh chính' : 'Main Branch' %></span>
+            <% } %>
+            <span class="badge <%= branch.status === 'open' ? 'badge-dark' : 'badge-red' %>" style="display:inline-flex;align-items:center;gap:5px">
+              <span style="width:6px;height:6px;border-radius:50%;background:<%= branch.status === 'open' ? '#2C6E49' : '#C0392B' %>;display:inline-block" aria-hidden="true"></span>
+              <%= lang === 'vi' ? (branch.status === 'open' ? 'Đang mở' : 'Đóng cửa') : (branch.status === 'open' ? 'Open' : 'Closed') %>
+            </span>
+          </div>
+          <h2 class="branch-card-name"><%= lang === 'vi' ? branch.name_vi : branch.name_en %></h2>
+          <address style="font-style:normal">
+            <div class="branch-info-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span><%= lang === 'vi' ? branch.address_vi : branch.address_en %></span>
+            </div>
+          </address>
+          <div class="branch-info-row">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12 19.79 19.79 0 0 1 1.95 3.42 2 2 0 0 1 3.92 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <a href="tel:<%= branch.phone.replace(/\s/g,'') %>" style="color:inherit"><%= branch.phone %></a>
+          </div>
+          <div class="branch-info-row">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span><%= lang === 'vi' ? branch.hours_vi : branch.hours_en %></span>
+          </div>
+          <% if (branch.parking) { %>
+          <div class="branch-info-row">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>
+            <span><%= lang === 'vi' ? branch.parking_vi : branch.parking_en %></span>
+          </div>
+          <% } %>
+          <% if (branch.amenities && branch.amenities.length) { %>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px">
+            <% branch.amenities.forEach(a => { %>
+            <span style="font-size:.72rem;padding:4px 10px;border-radius:999px;background:var(--c-bg2);color:var(--c-text-2);border:1px solid var(--c-border)"><%= a %></span>
+            <% }) %>
+          </div>
+          <% } %>
+          <div class="branch-card-actions">
+            <% if (branch.map_url) { %>
+            <a href="<%= branch.map_url %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <%= lang === 'vi' ? 'Xem bản đồ' : 'View on Map' %>
+            </a>
+            <% } %>
+            <a href="/booking?lang=<%= lang %>&branch=<%= branch.id %>" class="btn btn-accent btn-sm">
+              <%= lang === 'vi' ? 'Đặt bàn' : 'Book Here' %>
+            </a>
+          </div>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

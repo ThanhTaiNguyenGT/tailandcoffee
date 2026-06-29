@@ -1,0 +1,297 @@
+<%- include('partials/header') %>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-bg-pattern" aria-hidden="true"></div>
+  <div class="hero-bg-glow" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <div>
+      <div class="hero-eyebrow">
+        <span class="hero-dot" aria-hidden="true"></span>
+        <span><%= lang === 'vi' ? 'Mở cửa 6:30 – 22:00 · 7 ngày/tuần' : 'Open 6:30 AM – 10 PM · 7 days' %></span>
+      </div>
+      <h1 class="hero-title" id="hero-title">
+        <%- lang === 'vi'
+          ? 'Nơi Cảm Hứng<br><em>Hội Tụ</em>'
+          : 'Where Inspiration<br><em>Converges</em>' %>
+      </h1>
+      <p class="hero-desc">
+        <%= lang === 'vi'
+          ? 'TaiLand Cafe — không gian cà phê tinh tế, nơi mỗi ly đều kể một câu chuyện và mỗi khoảnh khắc đều đáng để tận hưởng.'
+          : 'TaiLand Cafe — a refined coffee experience where every cup tells a story and every moment is worth savoring.' %>
+      </p>
+      <div class="hero-cta">
+        <a href="/menu?lang=<%= lang %>" class="btn btn-accent btn-lg">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>
+          <%= lang === 'vi' ? 'Xem Menu' : 'View Menu' %>
+        </a>
+        <a href="/booking?lang=<%= lang %>" class="btn btn-outline-light btn-lg">
+          <%= lang === 'vi' ? 'Đặt bàn ngay' : 'Reserve a Table' %>
+        </a>
+      </div>
+      <div class="hero-stats" aria-label="<%= lang === 'vi' ? 'Thống kê' : 'Stats' %>">
+        <div class="hero-stat">
+          <div class="hero-stat-val">2+</div>
+          <div class="hero-stat-label"><%= lang === 'vi' ? 'Chi nhánh' : 'Locations' %></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">5K+</div>
+          <div class="hero-stat-label"><%= lang === 'vi' ? 'Khách/tháng' : 'Guests/month' %></div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">4.8</div>
+          <div class="hero-stat-label"><%= lang === 'vi' ? 'Đánh giá Google' : 'Google rating' %></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <%= lang === 'vi' ? 'Best Cafe 2024' : 'Best Cafe 2024' %>
+      </div>
+      <div class="hero-card-wrap">
+        <div class="hero-coffee-visual">
+          <svg class="hero-coffee-svg" viewBox="0 0 380 285" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background -->
+            <rect width="380" height="285" fill="#2a2520"/>
+            <!-- Table surface -->
+            <ellipse cx="190" cy="260" rx="160" ry="22" fill="#1e1a16" opacity=".7"/>
+            <!-- Coffee cup saucer -->
+            <ellipse cx="190" cy="230" rx="90" ry="14" fill="#3d342c"/>
+            <!-- Cup body -->
+            <path d="M130 140 Q120 200 140 228 Q165 240 215 240 Q235 228 250 200 Q262 140 250 140Z" fill="#F5F0E8"/>
+            <!-- Coffee liquid -->
+            <ellipse cx="190" cy="155" rx="52" ry="18" fill="#6B4226"/>
+            <!-- Cream/foam swirl -->
+            <ellipse cx="190" cy="148" rx="40" ry="12" fill="#C9A96E" opacity=".9"/>
+            <path d="M165 148 Q185 138 205 148 Q195 158 175 153Z" fill="#FAF7F2" opacity=".7"/>
+            <!-- Cup handle -->
+            <path d="M250 168 Q280 168 280 188 Q280 210 250 212" stroke="#F5F0E8" stroke-width="12" fill="none" stroke-linecap="round"/>
+            <!-- Steam lines -->
+            <path d="M168 118 Q172 108 168 98 Q164 88 168 78" stroke="rgba(250,247,242,0.25)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M185 112 Q190 100 185 88 Q180 76 185 64" stroke="rgba(250,247,242,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M202 118 Q206 108 202 98 Q198 88 202 78" stroke="rgba(250,247,242,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Coffee beans decoration -->
+            <ellipse cx="82" cy="80" rx="12" ry="8" fill="#6B4226" opacity=".5" transform="rotate(-20,82,80)"/>
+            <line x1="82" y1="73" x2="82" y2="87" stroke="#4a2c18" stroke-width="1.5" transform="rotate(-20,82,80)" opacity=".6"/>
+            <ellipse cx="298" cy="100" rx="10" ry="7" fill="#6B4226" opacity=".4" transform="rotate(15,298,100)"/>
+            <line x1="298" y1="94" x2="298" y2="106" stroke="#4a2c18" stroke-width="1.5" transform="rotate(15,298,100)" opacity=".5"/>
+            <ellipse cx="60" cy="200" rx="9" ry="6" fill="#6B4226" opacity=".3" transform="rotate(-30,60,200)"/>
+            <!-- Gold accent dots -->
+            <circle cx="40" cy="50" r="3" fill="#C9A96E" opacity=".35"/>
+            <circle cx="340" cy="60" r="2" fill="#C9A96E" opacity=".3"/>
+            <circle cx="320" cy="190" r="3.5" fill="#C9A96E" opacity=".25"/>
+            <circle cx="55" cy="140" r="2.5" fill="#C9A96E" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="hero-tags">
+          <div class="hero-tag">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span><%= lang === 'vi' ? '100% hạt cà phê Đắk Lắk' : '100% Dak Lak coffee beans' %></span>
+          </div>
+          <div class="hero-tag">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span><%= lang === 'vi' ? 'Rang xay tươi mỗi ngày' : 'Freshly roasted daily' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEATURES STRIP ═══════════════ -->
+<section class="features-strip" aria-label="<%= lang === 'vi' ? 'Điểm nổi bật' : 'Highlights' %>">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item sr">
+        <div class="feature-num">2+</div>
+        <div class="feature-label"><%= lang === 'vi' ? 'Chi nhánh' : 'Locations' %></div>
+      </div>
+      <div class="feature-item sr" style="transition-delay:.08s">
+        <div class="feature-num">40+</div>
+        <div class="feature-label"><%= lang === 'vi' ? 'Loại thức uống' : 'Menu items' %></div>
+      </div>
+      <div class="feature-item sr" style="transition-delay:.16s">
+        <div class="feature-num">5K+</div>
+        <div class="feature-label"><%= lang === 'vi' ? 'Khách hàng/tháng' : 'Guests/month' %></div>
+      </div>
+      <div class="feature-item sr" style="transition-delay:.24s">
+        <div class="feature-num">4.8★</div>
+        <div class="feature-label"><%= lang === 'vi' ? 'Đánh giá trung bình' : 'Avg. rating' %></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEATURED MENU ═══════════════ -->
+<section class="section" aria-labelledby="featured-title">
+  <div class="container">
+    <div class="text-center sr">
+      <span class="section-label"><%= lang === 'vi' ? 'Thức uống nổi bật' : 'Featured Drinks' %></span>
+      <h2 class="section-title" id="featured-title">
+        <%= lang === 'vi' ? 'Yêu thích của khách hàng' : "Customer Favorites" %>
+      </h2>
+      <div class="divider" aria-hidden="true"></div>
+    </div>
+    <div class="menu-grid">
+      <% featured.forEach((item, i) => { %>
+      <article class="menu-card sr" style="transition-delay:<%= i * 70 %>ms">
+        <div class="menu-card-img" role="img" aria-label="<%= lang === 'vi' ? item.name_vi : item.name_en %>">
+          <%- getCoffeeIllustration(item.category, i) %>
+        </div>
+        <div class="menu-card-body">
+          <% if (item['tag_' + lang]) { %>
+          <span class="badge badge-accent" style="margin-bottom:8px"><%= item['tag_' + lang] %></span>
+          <% } %>
+          <h3 class="menu-card-name"><%= lang === 'vi' ? item.name_vi : item.name_en %></h3>
+          <p class="menu-card-desc"><%= lang === 'vi' ? item.desc_vi : item.desc_en %></p>
+          <div class="menu-card-foot">
+            <span class="menu-card-price"><%= item.price.toLocaleString('vi-VN') %>đ</span>
+          </div>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+    <div class="text-center" style="margin-top:40px">
+      <a href="/menu?lang=<%= lang %>" class="btn btn-outline">
+        <%= lang === 'vi' ? 'Xem toàn bộ menu' : 'View Full Menu' %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT STRIP ═══════════════ -->
+<section class="about-strip" aria-labelledby="about-title">
+  <div class="container about-strip-inner">
+    <div class="about-strip-content sr">
+      <span class="section-label"><%= lang === 'vi' ? 'Về TaiLand' : 'About Us' %></span>
+      <h2 id="about-title">
+        <%= lang === 'vi'
+          ? 'Câu chuyện bắt đầu từ một ly cà phê'
+          : 'A Story That Begins with Coffee' %>
+      </h2>
+      <p>
+        <%= lang === 'vi'
+          ? 'TaiLand Cafe được sinh ra từ tình yêu với cà phê Việt và mong muốn tạo ra một không gian nơi mọi người có thể thực sự thư giãn, kết nối và tận hưởng từng khoảnh khắc.'
+          : 'TaiLand Cafe was born from a love of Vietnamese coffee and a desire to create a space where people can truly relax, connect, and savor every moment.' %>
+      </p>
+      <a href="/branches?lang=<%= lang %>" class="btn btn-outline-light">
+        <%= lang === 'vi' ? 'Tìm chi nhánh gần bạn' : 'Find a Location' %>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="about-values sr" style="transition-delay:.15s">
+      <div class="about-val">
+        <div class="about-val-icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 4C18 4 8 10 8 20a10 10 0 0020 0C28 10 18 4 18 4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 14v8M14 18l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h4><%= lang === 'vi' ? 'Nguyên liệu tươi' : 'Fresh Ingredients' %></h4>
+        <p><%= lang === 'vi' ? 'Nhập trực tiếp từ nông trại Đắk Lắk' : 'Direct from Dak Lak farms' %></p>
+      </div>
+      <div class="about-val">
+        <div class="about-val-icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 8h2a4 4 0 010 8h-2M8 8h14v10a4 4 0 01-4 4H12a4 4 0 01-4-4V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 4v2M16 4v2M20 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h4><%= lang === 'vi' ? 'Rang xay mỗi ngày' : 'Daily Roasting' %></h4>
+        <p><%= lang === 'vi' ? 'Hạt rang tươi, hương thơm nguyên bản' : 'Fresh roasted, authentic aroma' %></p>
+      </div>
+      <div class="about-val">
+        <div class="about-val-icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="14" width="24" height="16" rx="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 14V10a6 6 0 0112 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="18" cy="22" r="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4><%= lang === 'vi' ? 'Không gian thoải mái' : 'Cozy Space' %></h4>
+        <p><%= lang === 'vi' ? 'Thiết kế tinh tế, ánh sáng ấm áp' : 'Refined design, warm lighting' %></p>
+      </div>
+      <div class="about-val">
+        <div class="about-val-icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 20c0-7.18 5.82-13 13-13s13 5.82 13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 28c0-4.42 3.58-8 8-8s8 3.58 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="18" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h4><%= lang === 'vi' ? 'Thân thiện môi trường' : 'Eco-Friendly' %></h4>
+        <p><%= lang === 'vi' ? 'Cốc giấy, ống hút tre, túi tái chế' : 'Paper cups, bamboo straws' %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ BLOG PREVIEW ═══════════════ -->
+<section class="section" aria-labelledby="blog-preview-title">
+  <div class="container">
+    <div class="text-center sr">
+      <span class="section-label"><%= lang === 'vi' ? 'Từ blog TaiLand' : 'From Our Blog' %></span>
+      <h2 class="section-title" id="blog-preview-title">
+        <%= lang === 'vi' ? 'Câu chuyện & Kiến thức cafe' : 'Stories & Coffee Knowledge' %>
+      </h2>
+      <div class="divider" aria-hidden="true"></div>
+    </div>
+    <div class="blog-grid">
+      <% recentPosts.forEach((post, i) => { %>
+      <article class="blog-card sr" style="transition-delay:<%= i * 90 %>ms">
+        <div class="blog-card-img" role="img" aria-label="<%= lang === 'vi' ? post.title_vi : post.title_en %>">
+          <%- getBlogIllustration(i) %>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat"><%= lang === 'vi' ? post.category_vi : post.category_en %></div>
+          <h3 class="blog-card-title">
+            <a href="/blog/<%= post.slug %>?lang=<%= lang %>">
+              <%= lang === 'vi' ? post.title_vi : post.title_en %>
+            </a>
+          </h3>
+          <p class="blog-card-excerpt"><%= lang === 'vi' ? post.excerpt_vi : post.excerpt_en %></p>
+          <div class="blog-card-meta">
+            <span><%= post.author %></span>
+            <span aria-hidden="true">·</span>
+            <time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {day:'numeric',month:'long',year:'numeric'}) %></time>
+          </div>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+    <div class="text-center" style="margin-top:40px">
+      <a href="/blog?lang=<%= lang %>" class="btn btn-outline">
+        <%= lang === 'vi' ? 'Xem tất cả bài viết' : 'View All Posts' %>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA BANNER ═══════════════ -->
+<section class="cta-banner" aria-labelledby="cta-title">
+  <div class="container sr">
+    <span class="section-label" style="color:rgba(250,247,242,.6)">
+      <%= lang === 'vi' ? 'Đặt bàn ngay hôm nay' : 'Book Your Table Today' %>
+    </span>
+    <h2 id="cta-title">
+      <%= lang === 'vi'
+        ? 'Trải nghiệm TaiLand<br>cùng gia đình và bạn bè'
+        : 'Experience TaiLand<br>with Family & Friends' %>
+    </h2>
+    <p>
+      <%= lang === 'vi'
+        ? 'Đặt trước để chúng tôi chuẩn bị không gian tốt nhất cho bạn.'
+        : 'Book ahead so we can prepare the perfect space for you.' %>
+    </p>
+    <a href="/booking?lang=<%= lang %>" class="btn btn-white btn-lg">
+      <%= lang === 'vi' ? 'Đặt bàn miễn phí' : 'Reserve for Free' %>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

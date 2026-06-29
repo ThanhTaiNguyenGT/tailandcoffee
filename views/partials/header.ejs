@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'TaiLand Cafe' %></title>
+  <meta name="description" content="TaiLand Cafe — Chuỗi cà phê phong cách vintage ấm áp. Menu đa dạng, không gian xanh, thức uống chất lượng." />
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+<a class="sr-only" href="#main-content" style="position:absolute;left:-9999px;z-index:9999;padding:8px 16px;background:var(--c-primary);color:#fff;border-radius:4px">
+  Skip to content
+</a>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="/?lang=<%= lang %>" class="nav-logo" aria-label="TaiLand Cafe - Trang chủ">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+      </div>
+      TaiLand
+    </a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="/?lang=<%= lang %>" class="<%= currentPath === '/' ? 'active' : '' %>">
+        <%= lang === 'vi' ? 'Trang chủ' : 'Home' %>
+      </a></li>
+      <li><a href="/menu?lang=<%= lang %>" class="<%= currentPath.startsWith('/menu') ? 'active' : '' %>">Menu</a></li>
+      <li><a href="/booking?lang=<%= lang %>" class="<%= currentPath.startsWith('/booking') ? 'active' : '' %>">
+        <%= lang === 'vi' ? 'Đặt bàn' : 'Booking' %>
+      </a></li>
+      <li><a href="/branches?lang=<%= lang %>" class="<%= currentPath.startsWith('/branches') ? 'active' : '' %>">
+        <%= lang === 'vi' ? 'Chi nhánh' : 'Branches' %>
+      </a></li>
+      <li><a href="/blog?lang=<%= lang %>" class="<%= currentPath.startsWith('/blog') ? 'active' : '' %>">Blog</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="nav-lang" aria-label="Language switcher">
+        <a href="?lang=vi" class="<%= lang === 'vi' ? 'active' : '' %>">VI</a>
+        <span aria-hidden="true">|</span>
+        <a href="?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+      </div>
+      <a href="/booking?lang=<%= lang %>" class="btn btn-accent btn-sm">
+        <%= lang === 'vi' ? 'Đặt bàn ngay' : 'Reserve Now' %>
+      </a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Toggle menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="nav-mobile-menu" id="mobileMenu" role="menu">
+    <a href="/?lang=<%= lang %>" role="menuitem"><%= lang === 'vi' ? 'Trang chủ' : 'Home' %></a>
+    <a href="/menu?lang=<%= lang %>" role="menuitem">Menu</a>
+    <a href="/booking?lang=<%= lang %>" role="menuitem"><%= lang === 'vi' ? 'Đặt bàn' : 'Booking' %></a>
+    <a href="/branches?lang=<%= lang %>" role="menuitem"><%= lang === 'vi' ? 'Chi nhánh' : 'Branches' %></a>
+    <a href="/blog?lang=<%= lang %>" role="menuitem">Blog</a>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <a href="?lang=vi" class="btn btn-outline btn-sm">Tiếng Việt</a>
+      <a href="?lang=en" class="btn btn-outline btn-sm">English</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main-content">

@@ -1,0 +1,162 @@
+<%- include('partials/header') %>
+
+<section class="page-hero" aria-labelledby="booking-page-title">
+  <div class="container">
+    <div class="section-label"><%= lang === 'vi' ? 'Đặt bàn' : 'Reservation' %></div>
+    <h1 id="booking-page-title"><%= lang === 'vi' ? 'Đặt bàn tại TaiLand' : 'Reserve a Table at TaiLand' %></h1>
+    <p><%= lang === 'vi' ? 'Đặt bàn trước để chúng tôi chuẩn bị không gian tốt nhất cho bạn.' : 'Book ahead and we\'ll prepare the perfect space for you.' %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container booking-layout">
+
+    <!-- Booking form -->
+    <div class="booking-form-wrap sr">
+      <% if (success && success.length > 0) { %>
+        <div class="flash flash-success" role="alert">
+          <% success.forEach(m => { %><p><%= m %></p><% }) %>
+        </div>
+      <% } %>
+      <% if (error && error.length > 0) { %>
+        <div class="flash flash-error" role="alert">
+          <% error.forEach(m => { %><p><%= m %></p><% }) %>
+        </div>
+      <% } %>
+
+      <h2><%= lang === 'vi' ? 'Thông tin đặt bàn' : 'Booking Details' %></h2>
+
+      <form action="/booking?lang=<%= lang %>" method="POST" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name"><%= lang === 'vi' ? 'Họ và tên' : 'Full Name' %> <span aria-hidden="true" style="color:var(--c-accent)">*</span></label>
+            <input type="text" id="name" name="name" required autocomplete="name"
+              placeholder="<%= lang === 'vi' ? 'Nguyễn Văn A' : 'John Doe' %>">
+          </div>
+          <div class="form-group">
+            <label for="phone"><%= lang === 'vi' ? 'Số điện thoại' : 'Phone Number' %> <span aria-hidden="true" style="color:var(--c-accent)">*</span></label>
+            <input type="tel" id="phone" name="phone" required autocomplete="tel"
+              placeholder="0912 345 678">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bookingDate"><%= lang === 'vi' ? 'Ngày đặt' : 'Date' %> <span aria-hidden="true" style="color:var(--c-accent)">*</span></label>
+            <input type="date" id="bookingDate" name="date" required>
+          </div>
+          <div class="form-group">
+            <label for="time"><%= lang === 'vi' ? 'Giờ' : 'Time' %> <span aria-hidden="true" style="color:var(--c-accent)">*</span></label>
+            <select id="time" name="time" required>
+              <option value=""><%= lang === 'vi' ? '-- Chọn giờ --' : '-- Select time --' %></option>
+              <option>07:00</option><option>07:30</option>
+              <option>08:00</option><option>08:30</option>
+              <option>09:00</option><option>09:30</option>
+              <option>10:00</option><option>10:30</option>
+              <option>11:00</option><option>11:30</option>
+              <option>13:00</option><option>13:30</option>
+              <option>14:00</option><option>14:30</option>
+              <option>15:00</option><option>15:30</option>
+              <option>16:00</option><option>16:30</option>
+              <option>17:00</option><option>17:30</option>
+              <option>18:00</option><option>18:30</option>
+              <option>19:00</option><option>19:30</option>
+              <option>20:00</option><option>20:30</option>
+              <option>21:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="guests"><%= lang === 'vi' ? 'Số khách' : 'Number of Guests' %> <span aria-hidden="true" style="color:var(--c-accent)">*</span></label>
+            <select id="guests" name="guests" required>
+              <option value="1">1 <%= lang === 'vi' ? 'người' : 'person' %></option>
+              <option value="2" selected>2 <%= lang === 'vi' ? 'người' : 'people' %></option>
+              <option value="3">3 <%= lang === 'vi' ? 'người' : 'people' %></option>
+              <option value="4">4 <%= lang === 'vi' ? 'người' : 'people' %></option>
+              <option value="5">5 <%= lang === 'vi' ? 'người' : 'people' %></option>
+              <option value="6+">6+ <%= lang === 'vi' ? 'người (nhóm lớn)' : 'people (large group)' %></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="branch"><%= lang === 'vi' ? 'Chi nhánh' : 'Branch' %></label>
+            <select id="branch" name="branch">
+              <option value=""><%= lang === 'vi' ? '-- Bất kỳ --' : '-- Any branch --' %></option>
+              <% branches.forEach(b => { %>
+              <option value="<%= b.id %>"><%= lang === 'vi' ? b.name_vi : b.name_en %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="note"><%= lang === 'vi' ? 'Ghi chú' : 'Special Requests' %></label>
+          <textarea id="note" name="note" rows="3"
+            placeholder="<%= lang === 'vi' ? 'Yêu cầu đặc biệt, dị ứng thực phẩm, v.v...' : 'Special requests, allergies, etc...' %>"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-accent btn-lg" style="width:100%">
+          <%= lang === 'vi' ? 'Xác nhận đặt bàn →' : 'Confirm Reservation →' %>
+        </button>
+
+        <p style="margin-top:12px;font-size:.85rem;color:var(--c-text-muted);text-align:center">
+          <% if (lang === 'vi') { %>
+            Chúng tôi sẽ liên hệ xác nhận trong vòng 30 phút.
+          <% } else { %>
+            We'll contact you to confirm within 30 minutes.
+          <% } %>
+        </p>
+      </form>
+    </div>
+
+    <!-- Info panel -->
+    <aside class="booking-info sr" style="transition-delay:.15s" aria-label="<%= lang === 'vi' ? 'Thông tin chi nhánh' : 'Branch info' %>">
+      <h3><%= lang === 'vi' ? 'Giờ mở cửa' : 'Opening Hours' %></h3>
+      <ul class="info-list">
+        <li>
+          <span><%= lang === 'vi' ? 'Thứ 2 – Thứ 6' : 'Mon – Fri' %></span>
+          <span>6:30 – 22:00</span>
+        </li>
+        <li>
+          <span><%= lang === 'vi' ? 'Thứ 7 – CN' : 'Sat – Sun' %></span>
+          <span>7:00 – 22:30</span>
+        </li>
+      </ul>
+
+      <h3><%= lang === 'vi' ? 'Chính sách đặt bàn' : 'Booking Policy' %></h3>
+      <ul class="policy-list">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <%= lang === 'vi' ? 'Đặt bàn miễn phí, không cần đặt cọc' : 'Free booking, no deposit required' %>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <%= lang === 'vi' ? 'Giữ bàn 15 phút sau giờ đặt' : 'Table held for 15 minutes after booking time' %>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <%= lang === 'vi' ? 'Nhóm lớn vui lòng liên hệ trước' : 'Please call ahead for large groups' %>
+        </li>
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <%= lang === 'vi' ? 'Hủy bàn trước 2 tiếng' : 'Cancel at least 2 hours before' %>
+        </li>
+      </ul>
+
+      <h3><%= lang === 'vi' ? 'Liên hệ trực tiếp' : 'Contact Directly' %></h3>
+      <ul class="info-list">
+        <li>
+          <span>📞</span>
+          <a href="tel:02838221234">028 3822 1234</a>
+        </li>
+        <li>
+          <span>✉️</span>
+          <a href="mailto:hello@tailandcafe.vn">hello@tailandcafe.vn</a>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,52 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "slug": "bi-quyet-pha-ca-phe-ngon",
+      "title_vi": "Bí quyết pha cà phê ngon tại nhà theo phong cách TaiLand",
+      "title_en": "How to Brew Cafe-Quality Coffee at Home — TaiLand Style",
+      "excerpt_vi": "Chia sẻ từ barista TaiLand: những mẹo nhỏ giúp ly cà phê của bạn thơm ngon hơn mỗi ngày",
+      "excerpt_en": "Tips from TaiLand's baristas: small tricks to make your morning coffee taste cafe-quality",
+      "content_vi": "<p>Cà phê ngon không chỉ phụ thuộc vào hạt cà phê mà còn ở cách pha chế. Tại TaiLand, chúng tôi luôn chú trọng từng bước nhỏ...</p><p>Đầu tiên, hãy chọn hạt cà phê tươi rang trong vòng 2 tuần. Hạt cà phê để lâu sẽ mất đi hương thơm tự nhiên...</p>",
+      "content_en": "<p>Great coffee isn't just about the beans — it's about the process. At TaiLand, we pay attention to every small detail...</p><p>First, choose freshly roasted beans within 2 weeks. Stale beans lose their natural aroma...</p>",
+      "image": "/images/blog/pha-ca-phe.jpg",
+      "author": "Barista Minh",
+      "date": "2024-01-15",
+      "category_vi": "Kiến thức cafe",
+      "category_en": "Coffee Knowledge",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "slug": "kham-pha-khong-gian-thailand",
+      "title_vi": "Khám phá không gian cà phê TaiLand — Nơi thời gian chậm lại",
+      "title_en": "Exploring TaiLand Cafe Space — Where Time Slows Down",
+      "excerpt_vi": "Thiết kế interior của TaiLand lấy cảm hứng từ những quán cafe cổ kính Hội An và văn hóa cà phê Việt",
+      "excerpt_en": "TaiLand's interior draws inspiration from Hoi An's vintage cafes and Vietnamese coffee culture",
+      "content_vi": "<p>Khi bước vào TaiLand, bạn sẽ ngay lập tức cảm nhận được sự ấm áp từ những tông màu xanh rêu và be nhẹ nhàng...</p>",
+      "content_en": "<p>Stepping into TaiLand, you'll immediately feel the warmth from the moss green and cream tones...</p>",
+      "image": "/images/blog/khong-gian.jpg",
+      "author": "TaiLand Team",
+      "date": "2024-01-08",
+      "category_vi": "Câu chuyện TaiLand",
+      "category_en": "TaiLand Stories",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "slug": "menu-moi-thang-2",
+      "title_vi": "Menu mới tháng 2: Những thức uống đặc biệt cho mùa Valentine",
+      "title_en": "February Menu: Special Drinks for Valentine's Season",
+      "excerpt_vi": "TaiLand ra mắt bộ sưu tập thức uống đặc biệt mùa Valentine với nguyên liệu hoa hồng và dâu tây tươi",
+      "excerpt_en": "TaiLand launches a special Valentine collection with rose and fresh strawberry ingredients",
+      "content_vi": "<p>Tháng 2 là tháng của tình yêu, và TaiLand muốn góp phần làm ngọt ngào hơn những khoảnh khắc của bạn...</p>",
+      "content_en": "<p>February is the month of love, and TaiLand wants to sweeten your special moments...</p>",
+      "image": "/images/blog/valentine-menu.jpg",
+      "author": "TaiLand Team",
+      "date": "2024-01-28",
+      "category_vi": "Menu & Sự kiện",
+      "category_en": "Menu & Events",
+      "featured": false
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+<%- include('partials/header') %>
+
+<section class="page-hero" aria-labelledby="blog-title">
+  <div class="container">
+    <span class="section-label" style="color:rgba(250,247,242,.6)"><%= lang === 'vi' ? 'Blog & Kiến thức' : 'Blog & Knowledge' %></span>
+    <h1 class="page-hero-title" id="blog-title"><%= lang === 'vi' ? 'Câu chuyện TaiLand' : 'TaiLand Stories' %></h1>
+    <p class="page-hero-subtitle"><%= lang === 'vi' ? 'Kiến thức về cà phê, câu chuyện từ quán, và những trải nghiệm thú vị.' : 'Coffee knowledge, cafe stories, and interesting experiences.' %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% if (posts.length === 0) { %>
+    <div style="text-align:center;padding:80px 0;color:var(--c-text-3)">
+      <p><%= lang === 'vi' ? 'Chưa có bài viết nào.' : 'No posts yet.' %></p>
+    </div>
+    <% } else { %>
+    <div class="blog-grid">
+      <% posts.forEach((post, i) => { %>
+      <article class="blog-card sr" style="transition-delay:<%= (i % 3) * 90 %>ms">
+        <div class="blog-card-img" role="img" aria-label="<%= lang === 'vi' ? post.title_vi : post.title_en %>">
+          <%- getBlogIllustration(i) %>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-card-cat"><%= lang === 'vi' ? post.category_vi : post.category_en %></div>
+          <h2 class="blog-card-title">
+            <a href="/blog/<%= post.slug %>?lang=<%= lang %>">
+              <%= lang === 'vi' ? post.title_vi : post.title_en %>
+            </a>
+          </h2>
+          <p class="blog-card-excerpt"><%= lang === 'vi' ? post.excerpt_vi : post.excerpt_en %></p>
+          <div class="blog-card-meta" style="margin-bottom:14px">
+            <span><%= post.author %></span>
+            <span aria-hidden="true">·</span>
+            <time datetime="<%= post.date %>">
+              <%= new Date(post.date).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {day:'numeric',month:'long',year:'numeric'}) %>
+            </time>
+          </div>
+          <a href="/blog/<%= post.slug %>?lang=<%= lang %>" class="btn btn-outline btn-sm">
+            <%= lang === 'vi' ? 'Đọc tiếp' : 'Read More' %>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

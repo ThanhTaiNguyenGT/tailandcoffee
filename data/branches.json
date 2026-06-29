@@ -1,0 +1,38 @@
+{
+  "branches": [
+    {
+      "id": "quan-1",
+      "name_vi": "TaiLand Cafe - Quận 1",
+      "name_en": "TaiLand Cafe - District 1",
+      "address_vi": "123 Đường Lê Lợi, Phường Bến Nghé, Quận 1, TP.HCM",
+      "address_en": "123 Le Loi Street, Ben Nghe Ward, District 1, Ho Chi Minh City",
+      "phone": "028 3822 1234",
+      "hours_vi": "7:00 – 22:00 (Thứ 2 – Chủ nhật)",
+      "hours_en": "7:00 AM – 10:00 PM (Monday – Sunday)",
+      "map_url": "https://maps.google.com/?q=10.7769,106.7009",
+      "is_main": true,
+      "status": "open",
+      "parking": true,
+      "parking_vi": "Có bãi giữ xe máy miễn phí",
+      "parking_en": "Free motorcycle parking available",
+      "amenities": ["WiFi", "A/C", "Ổ cắm điện", "Pet-friendly"]
+    },
+    {
+      "id": "thu-duc",
+      "name_vi": "TaiLand Cafe - Thủ Đức",
+      "name_en": "TaiLand Cafe - Thu Duc",
+      "address_vi": "45 Đường Võ Văn Ngân, Phường Bình Thọ, TP Thủ Đức, TP.HCM",
+      "address_en": "45 Vo Van Ngan Street, Binh Tho Ward, Thu Duc City, Ho Chi Minh City",
+      "phone": "028 3896 5678",
+      "hours_vi": "6:30 – 22:00 (Thứ 2 – Chủ nhật)",
+      "hours_en": "6:30 AM – 10:00 PM (Monday – Sunday)",
+      "map_url": "https://maps.google.com/?q=10.8452,106.7718",
+      "is_main": false,
+      "status": "open",
+      "parking": true,
+      "parking_vi": "Có bãi đỗ xe ô tô và xe máy",
+      "parking_en": "Car and motorcycle parking available",
+      "amenities": ["WiFi", "A/C", "Phòng riêng", "Sân vườn"]
+    }
+  ]
+}

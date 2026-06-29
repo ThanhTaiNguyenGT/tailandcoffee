@@ -1,0 +1,67 @@
+<%- include('../partials/admin-header', { pageTitle: 'Bookings' }) %>
+
+<div class="admin-content">
+  <div class="admin-page-header">
+    <h1 class="admin-page-title">Đặt bàn (<%= bookings.length %>)</h1>
+  </div>
+
+  <% if (bookings.length === 0) { %>
+  <div class="empty-state"><p>Chưa có đơn đặt bàn nào.</p></div>
+  <% } else { %>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Khách hàng</th>
+          <th>SĐT</th>
+          <th>Ngày / Giờ</th>
+          <th>Số khách</th>
+          <th>Chi nhánh</th>
+          <th>Trạng thái</th>
+          <th>Ghi chú</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bookings.forEach(b => { %>
+        <tr>
+          <td><strong><%= b.name %></strong></td>
+          <td><a href="tel:<%= b.phone %>"><%= b.phone %></a></td>
+          <td><%= b.date %> <span style="color:var(--c-text-muted)"><%= b.time %></span></td>
+          <td><%= b.guests %></td>
+          <td><%= b.branch || '—' %></td>
+          <td>
+            <span class="status-badge status-<%= b.status || 'pending' %>">
+              <%= b.status === 'confirmed' ? '✅ Đã xác nhận' : b.status === 'cancelled' ? '❌ Đã hủy' : '⏳ Chờ xử lý' %>
+            </span>
+          </td>
+          <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"><%= b.note || '—' %></td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <% if (b.status !== 'confirmed') { %>
+              <form action="/admin/bookings/<%= b.id %>/status" method="POST" style="display:inline">
+                <input type="hidden" name="status" value="confirmed">
+                <button type="submit" class="btn btn-sm" style="background:#22c55e;color:#fff;border:none">✅</button>
+              </form>
+              <% } %>
+              <% if (b.status !== 'cancelled') { %>
+              <form action="/admin/bookings/<%= b.id %>/status" method="POST" style="display:inline">
+                <input type="hidden" name="status" value="cancelled">
+                <button type="submit" class="btn btn-sm" style="background:#f59e0b;color:#fff;border:none">❌</button>
+              </form>
+              <% } %>
+              <form action="/admin/bookings/<%= b.id %>/delete" method="POST" style="display:inline"
+                onsubmit="return confirm('Xóa đơn này?')">
+                <button type="submit" class="btn btn-sm" style="background:#ef4444;color:#fff;border:none">🗑</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/admin-footer') %>

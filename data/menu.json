@@ -1,0 +1,134 @@
+{
+  "categories": [
+    {
+      "id": "coffee",
+      "name_vi": "Cà phê",
+      "name_en": "Coffee",
+      "icon": "coffee"
+    },
+    {
+      "id": "milk-tea",
+      "name_vi": "Trà sữa",
+      "name_en": "Milk Tea",
+      "icon": "cup"
+    },
+    {
+      "id": "smoothie",
+      "name_vi": "Sinh tố",
+      "name_en": "Smoothies",
+      "icon": "leaf"
+    },
+    {
+      "id": "cake",
+      "name_vi": "Bánh & Snack",
+      "name_en": "Cakes & Snacks",
+      "icon": "cake"
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "category": "coffee",
+      "name_vi": "Bạc Xỉu TaiLand",
+      "name_en": "TaiLand White Coffee",
+      "desc_vi": "Cà phê sữa truyền thống pha theo phong cách riêng của TaiLand, béo ngậy, đậm đà",
+      "desc_en": "Traditional Vietnamese iced white coffee with TaiLand's signature blend",
+      "price": 35000,
+      "image": "/images/menu/bac-xiu.jpg",
+      "featured": true,
+      "tag_vi": "Bán chạy",
+      "tag_en": "Best Seller"
+    },
+    {
+      "id": 2,
+      "category": "coffee",
+      "name_vi": "Cold Brew TaiLand",
+      "name_en": "TaiLand Cold Brew",
+      "desc_vi": "Ủ lạnh 12 tiếng, vị đậm đà nhưng không đắng, thanh mát",
+      "desc_en": "12-hour cold brewed coffee, bold yet smooth with a refreshing finish",
+      "price": 55000,
+      "image": "/images/menu/cold-brew.jpg",
+      "featured": true,
+      "tag_vi": "Đặc biệt",
+      "tag_en": "Signature"
+    },
+    {
+      "id": 3,
+      "category": "coffee",
+      "name_vi": "Cà Phê Muối",
+      "name_en": "Salted Coffee",
+      "desc_vi": "Cà phê trứng phủ kem muối, sự kết hợp độc đáo của ngọt và mặn",
+      "desc_en": "Egg coffee topped with salted cream — a unique sweet and salty experience",
+      "price": 45000,
+      "image": "/images/menu/ca-phe-muoi.jpg",
+      "featured": false,
+      "tag_vi": "",
+      "tag_en": ""
+    },
+    {
+      "id": 4,
+      "category": "coffee",
+      "name_vi": "Americano",
+      "name_en": "Americano",
+      "desc_vi": "Espresso pha loãng với nước nóng, vị thanh, phù hợp làm việc",
+      "desc_en": "Espresso diluted with hot water — clean and focused",
+      "price": 40000,
+      "image": "/images/menu/americano.jpg",
+      "featured": false,
+      "tag_vi": "",
+      "tag_en": ""
+    },
+    {
+      "id": 5,
+      "category": "milk-tea",
+      "name_vi": "Trà Sữa Oolong Tươi",
+      "name_en": "Fresh Oolong Milk Tea",
+      "desc_vi": "Trà oolong tươi pha với sữa tươi nguyên chất, thêm trân châu đường đen",
+      "desc_en": "Fresh oolong tea with whole milk and brown sugar boba pearls",
+      "price": 50000,
+      "image": "/images/menu/tra-sua-oolong.jpg",
+      "featured": true,
+      "tag_vi": "Mới",
+      "tag_en": "New"
+    },
+    {
+      "id": 6,
+      "category": "milk-tea",
+      "name_vi": "Matcha Latte",
+      "name_en": "Matcha Latte",
+      "desc_vi": "Matcha Nhật Bản cao cấp pha với sữa oat, vị đậm thơm thanh tao",
+      "desc_en": "Premium Japanese matcha with oat milk — earthy and aromatic",
+      "price": 60000,
+      "image": "/images/menu/matcha-latte.jpg",
+      "featured": false,
+      "tag_vi": "",
+      "tag_en": ""
+    },
+    {
+      "id": 7,
+      "category": "smoothie",
+      "name_vi": "Sinh Tố Bơ Sữa Đặc",
+      "name_en": "Avocado Condensed Milk",
+      "desc_vi": "Bơ Đắk Lắk chín mịn xay với sữa đặc và đá xay, béo ngậy cực phẩm",
+      "desc_en": "Creamy Dak Lak avocado blended with condensed milk and crushed ice",
+      "price": 55000,
+      "image": "/images/menu/sinh-to-bo.jpg",
+      "featured": true,
+      "tag_vi": "Yêu thích",
+      "tag_en": "Favorite"
+    },
+    {
+      "id": 8,
+      "category": "cake",
+      "name_vi": "Bánh Croissant Bơ",
+      "name_en": "Butter Croissant",
+      "desc_vi": "Croissant nướng tươi mỗi sáng, giòn bên ngoài mềm bên trong",
+      "desc_en": "Fresh-baked every morning — crispy outside, fluffy inside",
+      "price": 35000,
+      "image": "/images/menu/croissant.jpg",
+      "featured": false,
+      "tag_vi": "",
+      "tag_en": ""
+    }
+  ]
+}

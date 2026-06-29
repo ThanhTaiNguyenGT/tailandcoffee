@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<article>
+  <section class="page-hero" aria-labelledby="post-title">
+    <div class="container" style="max-width:800px">
+      <div class="blog-card-cat" style="margin-bottom:12px"><%= lang === 'vi' ? post.category_vi : post.category_en %></div>
+      <h1 id="post-title"><%= lang === 'vi' ? post.title_vi : post.title_en %></h1>
+      <div class="blog-post-meta">
+        <span><%= post.author %></span>
+        <span>·</span>
+        <time datetime="<%= post.date %>">
+          <%= new Date(post.date).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', {day:'numeric',month:'long',year:'numeric'}) %>
+        </time>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container blog-post-body" style="max-width:800px">
+      <%- lang === 'vi' ? post.content_vi : post.content_en %>
+    </div>
+  </section>
+</article>
+
+<section class="section" style="background:var(--c-bg-alt)">
+  <div class="container" style="max-width:800px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+      <a href="/blog?lang=<%= lang %>" class="btn btn-outline">
+        ← <%= lang === 'vi' ? 'Về trang Blog' : 'Back to Blog' %>
+      </a>
+      <a href="/booking?lang=<%= lang %>" class="btn btn-accent">
+        <%= lang === 'vi' ? 'Đặt bàn ngay' : 'Reserve a Table' %>
+      </a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

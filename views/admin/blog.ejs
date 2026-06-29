@@ -1,0 +1,104 @@
+<%- include('../partials/admin-header', { pageTitle: 'Blog' }) %>
+
+<div class="admin-content">
+  <div class="admin-page-header">
+    <h1 class="admin-page-title">Quản lý Blog (<%= posts.length %> bài)</h1>
+  </div>
+
+  <!-- Add post form -->
+  <details class="admin-form-panel">
+    <summary>+ Thêm bài viết mới</summary>
+    <form action="/admin/blog/add" method="POST" class="admin-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tiêu đề (VI) *</label>
+          <input type="text" name="title_vi" required placeholder="Tiêu đề bài viết">
+        </div>
+        <div class="form-group">
+          <label>Title (EN) *</label>
+          <input type="text" name="title_en" required placeholder="Article title">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tóm tắt (VI)</label>
+          <textarea name="excerpt_vi" rows="2" placeholder="Mô tả ngắn..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Excerpt (EN)</label>
+          <textarea name="excerpt_en" rows="2" placeholder="Short description..."></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nội dung (VI) — HTML được phép</label>
+          <textarea name="content_vi" rows="6" placeholder="<p>Nội dung...</p>"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Content (EN) — HTML allowed</label>
+          <textarea name="content_en" rows="6" placeholder="<p>Content...</p>"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Danh mục (VI)</label>
+          <input type="text" name="category_vi" placeholder="Kiến thức Cafe">
+        </div>
+        <div class="form-group">
+          <label>Category (EN)</label>
+          <input type="text" name="category_en" placeholder="Coffee Knowledge">
+        </div>
+        <div class="form-group">
+          <label>Tác giả</label>
+          <input type="text" name="author" placeholder="TaiLand Team">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-accent">Đăng bài</button>
+    </form>
+  </details>
+
+  <!-- Posts table -->
+  <% if (posts.length === 0) { %>
+  <div class="empty-state"><p>Chưa có bài viết nào.</p></div>
+  <% } else { %>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Tiêu đề VI</th>
+          <th>Title EN</th>
+          <th>Slug</th>
+          <th>Danh mục</th>
+          <th>Tác giả</th>
+          <th>Ngày</th>
+          <th>Xem</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% posts.forEach(post => { %>
+        <tr>
+          <td><strong><%= post.title_vi %></strong></td>
+          <td><%= post.title_en %></td>
+          <td style="font-family:monospace;font-size:.8rem;color:var(--c-text-muted)"><%= post.slug %></td>
+          <td><%= post.category_vi %></td>
+          <td><%= post.author %></td>
+          <td><%= new Date(post.date).toLocaleDateString('vi-VN') %></td>
+          <td>
+            <a href="/blog/<%= post.slug %>?lang=vi" target="_blank" class="btn btn-sm btn-outline">👁</a>
+          </td>
+          <td>
+            <form action="/admin/blog/<%= post.id %>/delete" method="POST"
+              onsubmit="return confirm('Xóa bài này?')">
+              <button type="submit" class="btn btn-sm" style="background:#ef4444;color:#fff;border:none">🗑 Xóa</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/admin-footer') %>

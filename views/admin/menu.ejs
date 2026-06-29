@@ -1,0 +1,98 @@
+<%- include('../partials/admin-header', { pageTitle: 'Menu' }) %>
+
+<div class="admin-content">
+  <div class="admin-page-header">
+    <h1 class="admin-page-title">Quản lý Menu (<%= items.length %> món)</h1>
+  </div>
+
+  <!-- Add item form -->
+  <details class="admin-form-panel">
+    <summary>+ Thêm món mới</summary>
+    <form action="/admin/menu/add" method="POST" class="admin-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tên (Tiếng Việt) *</label>
+          <input type="text" name="name_vi" required placeholder="Cà phê sữa đá">
+        </div>
+        <div class="form-group">
+          <label>Name (English) *</label>
+          <input type="text" name="name_en" required placeholder="Iced Milk Coffee">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Mô tả (VI)</label>
+          <textarea name="desc_vi" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Description (EN)</label>
+          <textarea name="desc_en" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Giá (VNĐ) *</label>
+          <input type="number" name="price" required min="0" placeholder="45000">
+        </div>
+        <div class="form-group">
+          <label>Danh mục *</label>
+          <select name="category" required>
+            <option value="coffee">Cà phê</option>
+            <option value="milk-tea">Trà sữa</option>
+            <option value="smoothie">Sinh tố</option>
+            <option value="cake">Bánh</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nổi bật</label>
+          <select name="featured">
+            <option value="false">Không</option>
+            <option value="true">Có</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-accent">Thêm món</button>
+    </form>
+  </details>
+
+  <!-- Items table -->
+  <% if (items.length === 0) { %>
+  <div class="empty-state"><p>Menu chưa có món nào.</p></div>
+  <% } else { %>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Tên VI</th>
+          <th>Tên EN</th>
+          <th>Danh mục</th>
+          <th>Giá</th>
+          <th>Nổi bật</th>
+          <th>Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach(item => { %>
+        <tr>
+          <td><strong><%= item.name_vi %></strong></td>
+          <td><%= item.name_en %></td>
+          <td>
+            <span class="badge badge-muted"><%= item.category %></span>
+          </td>
+          <td><%= item.price.toLocaleString('vi-VN') %>đ</td>
+          <td><%= item.featured ? '⭐' : '—' %></td>
+          <td>
+            <form action="/admin/menu/<%= item.id %>/delete" method="POST"
+              onsubmit="return confirm('Xóa món <%= item.name_vi %>?')">
+              <button type="submit" class="btn btn-sm" style="background:#ef4444;color:#fff;border:none">🗑 Xóa</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/admin-footer') %>

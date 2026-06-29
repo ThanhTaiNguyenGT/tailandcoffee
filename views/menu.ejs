@@ -1,0 +1,78 @@
+<%- include('partials/header') %>
+
+<section class="page-hero" aria-labelledby="menu-page-title">
+  <div class="container">
+    <span class="section-label" style="color:rgba(250,247,242,.6)"><%= lang === 'vi' ? 'Thực đơn' : 'Our Menu' %></span>
+    <h1 class="page-hero-title" id="menu-page-title"><%= lang === 'vi' ? 'Menu TaiLand' : 'TaiLand Menu' %></h1>
+    <p class="page-hero-subtitle"><%= lang === 'vi' ? 'Từ cà phê truyền thống đến đồ uống sáng tạo — tất cả đều được pha chế với tâm huyết.' : 'From traditional coffee to creative drinks — all crafted with passion.' %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <!-- Category filter -->
+    <div class="menu-cats" role="tablist" aria-label="<%= lang === 'vi' ? 'Danh mục' : 'Categories' %>">
+      <button class="menu-cat-btn <%= !currentCat ? 'active' : '' %>" data-cat="all" role="tab" aria-selected="<%= !currentCat %>">
+        <%= lang === 'vi' ? 'Tất cả' : 'All' %>
+      </button>
+      <% categories.forEach(cat => { %>
+      <button class="menu-cat-btn <%= currentCat === cat.id ? 'active' : '' %>" data-cat="<%= cat.id %>" role="tab" aria-selected="<%= currentCat === cat.id %>">
+        <%= lang === 'vi' ? cat.name_vi : cat.name_en %>
+      </button>
+      <% }) %>
+    </div>
+
+    <% if (items.length === 0) { %>
+    <div style="text-align:center;padding:64px 0;color:var(--c-text-3)">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 16px;opacity:.4" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+      <p><%= lang === 'vi' ? 'Không có món nào trong danh mục này.' : 'No items in this category.' %></p>
+    </div>
+    <% } else { %>
+    <div class="menu-grid">
+      <% items.forEach((item, i) => { %>
+      <article class="menu-card sr" style="transition-delay:<%= (i % 4) * 70 %>ms" data-category="<%= item.category %>">
+        <div class="menu-card-img" role="img" aria-label="<%= lang === 'vi' ? item.name_vi : item.name_en %>">
+          <%- getCoffeeIllustration(item.category, i) %>
+        </div>
+        <div class="menu-card-body">
+          <% if (item.featured) { %>
+          <span class="badge badge-accent" style="margin-bottom:8px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <%= lang === 'vi' ? 'Nổi bật' : 'Featured' %>
+          </span>
+          <% } %>
+          <% if (item['tag_' + lang]) { %>
+          <span class="badge badge-dark" style="margin-bottom:8px;margin-left:<%= item.featured ? '6px' : '0' %>"><%= item['tag_' + lang] %></span>
+          <% } %>
+          <h2 class="menu-card-name"><%= lang === 'vi' ? item.name_vi : item.name_en %></h2>
+          <p class="menu-card-desc"><%= lang === 'vi' ? item.desc_vi : item.desc_en %></p>
+          <div class="menu-card-foot">
+            <span class="menu-card-price"><%= item.price.toLocaleString('vi-VN') %>đ</span>
+            <span style="font-size:.72rem;color:var(--c-text-3)">
+              <% const catObj = categories.find(c => c.id === item.category); %>
+              <%= catObj ? (lang === 'vi' ? catObj.name_vi : catObj.name_en) : '' %>
+            </span>
+          </div>
+        </div>
+      </article>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner" aria-labelledby="menu-cta-title">
+  <div class="container sr">
+    <h2 id="menu-cta-title">
+      <%= lang === 'vi' ? 'Thích gì? Đặt bàn ngay!' : 'See something you like?' %>
+    </h2>
+    <p><%= lang === 'vi' ? 'Đặt bàn trước để có chỗ ngồi tốt nhất.' : 'Book a table for the best experience.' %></p>
+    <a href="/booking?lang=<%= lang %>" class="btn btn-white btn-lg">
+      <%= lang === 'vi' ? 'Đặt bàn ngay' : 'Reserve a Table' %>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
