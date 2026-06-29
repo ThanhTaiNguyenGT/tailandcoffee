@@ -129,6 +129,19 @@
       "featured": false,
       "tag_vi": "",
       "tag_en": ""
+    },
+    {
+      "id": 1782709959415,
+      "category": "coffee",
+      "name_vi": "Tài Xỉu Chưa..",
+      "name_en": "Tai Xiu Yet",
+      "desc_vi": "Uống vào là mê",
+      "desc_en": "",
+      "price": 49000,
+      "image": "/images/menu/item-1782709959415-1782721900679.jpg",
+      "featured": false,
+      "tag_vi": "",
+      "tag_en": ""
     }
   ]
 }
