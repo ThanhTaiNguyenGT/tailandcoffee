@@ -2,8 +2,30 @@ const express = require('express');
 const router  = express.Router();
 const fs      = require('fs');
 const path    = require('path');
+const multer  = require('multer');
 const { requireAdmin } = require('../middleware/auth');
 const github  = require('../services/github');
+
+// ── Multer: upload hình menu ──
+const menuImgStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, '../public/images/menu');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `item-${req.params.id}-${Date.now()}${ext}`);
+  },
+});
+const uploadMenuImg = multer({
+  storage: menuImgStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (/^image\/(jpeg|png|webp|gif)$/.test(file.mimetype)) cb(null, true);
+    else cb(new Error('Chỉ chấp nhận ảnh JPG, PNG, WEBP, GIF'));
+  },
+});
 
 const menuPath     = path.join(__dirname, '../data/menu.json');
 const blogPath     = path.join(__dirname, '../data/blog.json');
@@ -177,6 +199,61 @@ router.post('/menu/add', requireAdmin, async (req, res) => {
     req.flash('success', `✓ Thêm "${name_vi}" thành công & đã sync lên GitHub (commit ${gh.commit})`);
   } else {
     req.flash('success', `✓ Thêm "${name_vi}" thành công (chưa sync GitHub: ${gh.error})`);
+  }
+  res.redirect('/admin/menu');
+});
+
+// ── Upload hình ảnh cho món ──
+router.post('/menu/:id/image', requireAdmin, (req, res, next) => {
+  uploadMenuImg.single('image')(req, res, async (err) => {
+    if (err) {
+      req.flash('error', err.message || 'Upload thất bại');
+      return res.redirect('/admin/menu');
+    }
+    if (!req.file) {
+      req.flash('error', 'Chưa chọn file ảnh');
+      return res.redirect('/admin/menu');
+    }
+
+    const menu = readJSON(menuPath);
+    const item = menu.items.find(i => i.id === parseInt(req.params.id));
+    if (!item) {
+      req.flash('error', 'Không tìm thấy món');
+      return res.redirect('/admin/menu');
+    }
+
+    // Xóa ảnh cũ nếu có (không phải default)
+    if (item.image && item.image !== '/images/menu/default.jpg') {
+      const oldPath = path.join(__dirname, '../public', item.image);
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+
+    item.image = '/images/menu/' + req.file.filename;
+    writeJSON(menuPath, menu);
+
+    const gh = await syncToGitHub('menu.json', menu, `[Admin] Cập nhật hình: ${item.name_vi}`);
+    if (gh.success) {
+      req.flash('success', `✓ Cập nhật hình "${item.name_vi}" thành công & đã sync GitHub`);
+    } else {
+      req.flash('success', `✓ Cập nhật hình "${item.name_vi}" thành công`);
+    }
+    res.redirect('/admin/menu');
+  });
+});
+
+// ── Xóa hình ảnh món (về SVG mặc định) ──
+router.post('/menu/:id/image/delete', requireAdmin, async (req, res) => {
+  const menu = readJSON(menuPath);
+  const item = menu.items.find(i => i.id === parseInt(req.params.id));
+  if (item) {
+    if (item.image && item.image !== '/images/menu/default.jpg') {
+      const oldPath = path.join(__dirname, '../public', item.image);
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+    item.image = '/images/menu/default.jpg';
+    writeJSON(menuPath, menu);
+    syncToGitHub('menu.json', menu, `[Admin] Xóa hình: ${item.name_vi}`);
+    req.flash('success', `✓ Đã xóa hình "${item.name_vi}" — dùng minh họa mặc định`);
   }
   res.redirect('/admin/menu');
 });

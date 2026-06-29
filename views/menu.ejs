@@ -38,7 +38,12 @@
         data-price="<%= item.price %>"
         data-category="<%= item.category %>">
         <div class="menu-card-img" role="img" aria-label="<%= lang === 'vi' ? item.name_vi : item.name_en %>">
+          <% if (item.image && item.image !== '/images/menu/default.jpg') { %>
+          <img src="<%= item.image %>" alt="<%= lang === 'vi' ? item.name_vi : item.name_en %>"
+            style="width:100%;height:100%;object-fit:cover;display:block">
+          <% } else { %>
           <%- getCoffeeIllustration(item.category, i) %>
+          <% } %>
         </div>
         <div class="menu-card-body">
           <% if (item.featured) { %>
