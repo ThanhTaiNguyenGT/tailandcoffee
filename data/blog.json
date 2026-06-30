@@ -1,6 +1,22 @@
 {
   "posts": [
     {
+      "id": 1782787970396,
+      "slug": "tailand-noi-khoi-nguon-cam-hung-cho-gioi-tre-1782787970396",
+      "title_vi": "TaiLand nơi khơi nguồn cảm hứng cho giới trẻ",
+      "title_en": "TaiLand nơi khơi nguồn cảm hứng cho giới trẻ",
+      "excerpt_vi": "Đến với TaiLand, các bạn trẻ sẽ đắm mình vào không gian nhẹ nhàng, hoài cỗ, đắm mình vào những khoẳng khắc trí thức với những quyển sách, câu chuyện đầy lôi cuốn.",
+      "excerpt_en": "Đến với TaiLand, các bạn trẻ sẽ đắm mình vào không gian nhẹ nhàng, hoài cỗ, đắm mình vào những khoẳng khắc trí thức với những quyển sách, câu chuyện đầy lôi cuốn.",
+      "content_vi": "<p>Đến với TaiLand, các bạn trẻ sẽ đắm mình vào không gian nhẹ nhàng, hoài cỗ, đắm mình vào những khoẳng khắc trí thức với những quyển sách, câu chuyện đầy lôi cuốn.</p>",
+      "content_en": "<p>Đến với TaiLand, các bạn trẻ sẽ đắm mình vào không gian nhẹ nhàng, hoài cỗ, đắm mình vào những khoẳng khắc trí thức với những quyển sách, câu chuyện đầy lôi cuốn.</p>",
+      "author": "TaiL@nd",
+      "date": "2026-06-30",
+      "category_vi": "Kiến thức cafe",
+      "category_en": "Coffe Knowledge",
+      "image": "/images/blog/default.jpg",
+      "featured": false
+    },
+    {
       "id": 1,
       "slug": "bi-quyet-pha-ca-phe-ngon",
       "title_vi": "Bí quyết pha cà phê ngon tại nhà theo phong cách TaiLand",
