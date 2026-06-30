@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const menuData = require('../data/menu.json');
-const blogData = require('../data/blog.json');
-const branchData = require('../data/branches.json');
+const fs = require('fs');
+const path = require('path');
+
+const menuPath     = path.join(__dirname, '../data/menu.json');
+const blogPath      = path.join(__dirname, '../data/blog.json');
+const branchesPath  = path.join(__dirname, '../data/branches.json');
+const readJSON = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 
 // SVG palette config
 const PALETTES = {
@@ -97,6 +101,9 @@ function getBranchIllustration(idx) {
 }
 
 router.get('/', (req, res) => {
+  const menuData = readJSON(menuPath);
+  const blogData = readJSON(blogPath);
+  const branchData = readJSON(branchesPath);
   const featured = menuData.items.filter(i => i.featured).slice(0, 4);
   const recentPosts = blogData.posts.slice(0, 3);
   const lang = res.locals.lang;
