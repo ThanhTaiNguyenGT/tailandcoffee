@@ -3,8 +3,8 @@
 <article>
   <section class="page-hero" aria-labelledby="post-title">
     <div class="container" style="max-width:800px">
-      <div class="blog-card-cat" style="margin-bottom:12px"><%= lang === 'vi' ? post.category_vi : post.category_en %></div>
-      <h1 id="post-title"><%= lang === 'vi' ? post.title_vi : post.title_en %></h1>
+      <div class="blog-card-cat" style="margin-bottom:12px;color:var(--c-accent)"><%= lang === 'vi' ? post.category_vi : post.category_en %></div>
+      <h1 id="post-title" class="page-hero-title"><%= lang === 'vi' ? post.title_vi : post.title_en %></h1>
       <div class="blog-post-meta">
         <span><%= post.author %></span>
         <span>·</span>
