@@ -258,6 +258,48 @@ router.post('/menu/:id/image/delete', requireAdmin, async (req, res) => {
   res.redirect('/admin/menu');
 });
 
+// ── Sửa món ──
+router.get('/menu/:id/edit', requireAdmin, (req, res) => {
+  const menu = readJSON(menuPath);
+  const item = menu.items.find(i => i.id === parseInt(req.params.id));
+  if (!item) {
+    req.flash('error', 'Không tìm thấy món');
+    return res.redirect('/admin/menu');
+  }
+  res.render('admin/menu-edit', {
+    title: `Sửa món: ${item.name_vi} — Admin TaiLand`,
+    item,
+    categories: menu.categories,
+  });
+});
+
+router.post('/menu/:id/edit', requireAdmin, async (req, res) => {
+  const menu = readJSON(menuPath);
+  const item = menu.items.find(i => i.id === parseInt(req.params.id));
+  if (!item) {
+    req.flash('error', 'Không tìm thấy món');
+    return res.redirect('/admin/menu');
+  }
+
+  const { category, name_vi, name_en, desc_vi, desc_en, price, featured, tag_vi, tag_en } = req.body;
+  Object.assign(item, {
+    category, name_vi, name_en, desc_vi, desc_en,
+    price: parseInt(price),
+    featured: featured === 'on',
+    tag_vi: tag_vi || '',
+    tag_en: tag_en || '',
+  });
+  writeJSON(menuPath, menu);
+
+  const gh = await syncToGitHub('menu.json', menu, `[Admin] Cập nhật món: ${name_vi}`);
+  if (gh.success) {
+    req.flash('success', `✓ Cập nhật "${name_vi}" thành công & đã sync lên GitHub (commit ${gh.commit})`);
+  } else {
+    req.flash('success', `✓ Cập nhật "${name_vi}" thành công (chưa sync GitHub: ${gh.error})`);
+  }
+  res.redirect('/admin/menu');
+});
+
 router.post('/menu/:id/delete', requireAdmin, async (req, res) => {
   const menu = readJSON(menuPath);
   const item = menu.items.find(i => i.id === parseInt(req.params.id));
@@ -318,6 +360,45 @@ router.post('/blog/add', requireAdmin, async (req, res) => {
     req.flash('success', `✓ Đăng bài thành công & đã sync lên GitHub (commit ${gh.commit})`);
   } else {
     req.flash('success', `✓ Đăng bài thành công (chưa sync GitHub: ${gh.error})`);
+  }
+  res.redirect('/admin/blog');
+});
+
+// ── Sửa bài blog ──
+router.get('/blog/:id/edit', requireAdmin, (req, res) => {
+  const blog = readJSON(blogPath);
+  const post = blog.posts.find(p => p.id === parseInt(req.params.id));
+  if (!post) {
+    req.flash('error', 'Không tìm thấy bài viết');
+    return res.redirect('/admin/blog');
+  }
+  res.render('admin/blog-edit', {
+    title: `Sửa bài: ${post.title_vi} — Admin TaiLand`,
+    post,
+  });
+});
+
+router.post('/blog/:id/edit', requireAdmin, async (req, res) => {
+  const blog = readJSON(blogPath);
+  const post = blog.posts.find(p => p.id === parseInt(req.params.id));
+  if (!post) {
+    req.flash('error', 'Không tìm thấy bài viết');
+    return res.redirect('/admin/blog');
+  }
+
+  const { title_vi, title_en, excerpt_vi, excerpt_en, content_vi, content_en, author, category_vi, category_en, featured } = req.body;
+  Object.assign(post, {
+    title_vi, title_en, excerpt_vi, excerpt_en, content_vi, content_en,
+    author, category_vi, category_en,
+    featured: featured === 'on',
+  });
+  writeJSON(blogPath, blog);
+
+  const gh = await syncToGitHub('blog.json', blog, `[Admin] Cập nhật bài: ${title_vi}`);
+  if (gh.success) {
+    req.flash('success', `✓ Cập nhật bài "${title_vi}" thành công & đã sync lên GitHub (commit ${gh.commit})`);
+  } else {
+    req.flash('success', `✓ Cập nhật bài "${title_vi}" thành công (chưa sync GitHub: ${gh.error})`);
   }
   res.redirect('/admin/blog');
 });

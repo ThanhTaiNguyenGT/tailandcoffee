@@ -1,97 +1,142 @@
-<%- include('../partials/admin-header', { pageTitle: 'Blog' }) %>
+﻿<%- include('../partials/admin-header', { pageTitle: 'Blog' }) %>
 
-<div class="admin-content">
-  <div class="admin-page-header">
-    <h1 class="admin-page-title">Quản lý Blog (<%= posts.length %> bài)</h1>
+<div class="adm-page-header">
+  <div>
+    <h1 class="adm-page-title">Quan ly Blog</h1>
+    <p class="adm-page-subtitle"><%= posts.length %> bai viet</p>
   </div>
+  <a href="/admin" class="adm-btn adm-btn-outline adm-btn-sm">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Dashboard
+  </a>
+</div>
 
-  <!-- Add post form -->
-  <details class="admin-form-panel">
-    <summary>+ Thêm bài viết mới</summary>
-    <form action="/admin/blog/add" method="POST" class="admin-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Tiêu đề (VI) *</label>
-          <input type="text" name="title_vi" required placeholder="Tiêu đề bài viết">
+<div class="adm-card" style="margin-bottom:20px">
+  <div class="adm-collapsible-header" id="formHeader" onclick="toggleForm()">
+    <span class="adm-card-title">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Them bai viet moi
+    </span>
+    <svg id="formChevron" class="adm-collapsible-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <div id="addForm" class="adm-collapsible-body">
+    <form action="/admin/blog/add" method="POST" id="blogAddForm">
+      <div class="adm-form-row">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Tieu de (VI) <span class="adm-required">*</span></label>
+          <input class="adm-input" type="text" name="title_vi" required placeholder="Tieu de bai viet">
         </div>
-        <div class="form-group">
-          <label>Title (EN) *</label>
-          <input type="text" name="title_en" required placeholder="Article title">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Tóm tắt (VI)</label>
-          <textarea name="excerpt_vi" rows="2" placeholder="Mô tả ngắn..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Excerpt (EN)</label>
-          <textarea name="excerpt_en" rows="2" placeholder="Short description..."></textarea>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Title (EN) <span class="adm-required">*</span></label>
+          <input class="adm-input" type="text" name="title_en" required placeholder="Article title">
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nội dung (VI) — HTML được phép</label>
-          <textarea name="content_vi" rows="6" placeholder="<p>Nội dung...</p>"></textarea>
+      <div class="adm-form-row">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Tom tat (VI)</label>
+          <textarea class="adm-textarea" name="excerpt_vi" rows="2" placeholder="Mo ta ngan..."></textarea>
         </div>
-        <div class="form-group">
-          <label>Content (EN) — HTML allowed</label>
-          <textarea name="content_en" rows="6" placeholder="<p>Content...</p>"></textarea>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Danh mục (VI)</label>
-          <input type="text" name="category_vi" placeholder="Kiến thức Cafe">
-        </div>
-        <div class="form-group">
-          <label>Category (EN)</label>
-          <input type="text" name="category_en" placeholder="Coffee Knowledge">
-        </div>
-        <div class="form-group">
-          <label>Tác giả</label>
-          <input type="text" name="author" placeholder="TaiLand Team">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Excerpt (EN)</label>
+          <textarea class="adm-textarea" name="excerpt_en" rows="2" placeholder="Short description..."></textarea>
         </div>
       </div>
-      <button type="submit" class="btn btn-accent">Đăng bài</button>
+      <div class="adm-form-row">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Noi dung (VI) <span class="adm-label-opt">HTML duoc phep</span></label>
+          <textarea class="adm-textarea" name="content_vi" rows="6" placeholder="<p>Noi dung...</p>" style="font-family:monospace;font-size:.82rem"></textarea>
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Content (EN) <span class="adm-label-opt">HTML allowed</span></label>
+          <textarea class="adm-textarea" name="content_en" rows="6" placeholder="<p>Content...</p>" style="font-family:monospace;font-size:.82rem"></textarea>
+        </div>
+      </div>
+      <div class="adm-form-row-3">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Danh muc (VI)</label>
+          <input class="adm-input" type="text" name="category_vi" placeholder="Kien thuc Cafe">
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Category (EN)</label>
+          <input class="adm-input" type="text" name="category_en" placeholder="Coffee Knowledge">
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Tac gia</label>
+          <input class="adm-input" type="text" name="author" placeholder="TaiLand Team">
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding-top:4px">
+        <button type="submit" class="adm-btn adm-btn-accent" id="submitBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Dang bai & Sync GitHub
+        </button>
+      </div>
     </form>
-  </details>
+  </div>
+</div>
 
-  <!-- Posts table -->
+<div class="adm-card">
+  <div class="adm-card-header">
+    <span class="adm-card-title">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Danh sach bai viet (<%= posts.length %>)
+    </span>
+  </div>
   <% if (posts.length === 0) { %>
-  <div class="empty-state"><p>Chưa có bài viết nào.</p></div>
+  <div class="adm-empty">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    <p>Chua co bai viet nao</p>
+    <span>Them bai viet dau tien phia tren</span>
+  </div>
   <% } else { %>
-  <div class="admin-table-wrap">
-    <table class="admin-table">
+  <div class="adm-table-wrap">
+    <table class="adm-table">
       <thead>
         <tr>
-          <th>Tiêu đề VI</th>
-          <th>Title EN</th>
-          <th>Slug</th>
-          <th>Danh mục</th>
-          <th>Tác giả</th>
-          <th>Ngày</th>
-          <th>Xem</th>
-          <th>Xóa</th>
+          <th>Tieu de</th>
+          <th>Danh muc</th>
+          <th>Tac gia</th>
+          <th>Ngay</th>
+          <th>Noi bat</th>
+          <th style="width:140px">Thao tac</th>
         </tr>
       </thead>
       <tbody>
         <% posts.forEach(post => { %>
         <tr>
-          <td><strong><%= post.title_vi %></strong></td>
-          <td><%= post.title_en %></td>
-          <td style="font-family:monospace;font-size:.8rem;color:var(--c-text-muted)"><%= post.slug %></td>
-          <td><%= post.category_vi %></td>
-          <td><%= post.author %></td>
-          <td><%= new Date(post.date).toLocaleDateString('vi-VN') %></td>
           <td>
-            <a href="/blog/<%= post.slug %>?lang=vi" target="_blank" class="btn btn-sm btn-outline">👁</a>
+            <div style="font-weight:600;font-size:.88rem;color:var(--adm-text)"><%= post.title_vi %></div>
+            <div style="font-size:.75rem;color:var(--adm-text-3);margin-top:2px"><%= post.title_en %></div>
+            <div style="font-size:.7rem;color:var(--adm-text-3);font-family:monospace;margin-top:3px"><%= post.slug %></div>
+          </td>
+          <td><span class="adm-badge adm-badge-dark"><%= post.category_vi %></span></td>
+          <td style="font-size:.82rem"><%= post.author %></td>
+          <td style="font-size:.82rem;color:var(--adm-text-3)"><%= new Date(post.date).toLocaleDateString('vi-VN') %></td>
+          <td>
+            <% if (post.featured) { %>
+            <span class="adm-badge adm-badge-yellow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              Noi bat
+            </span>
+            <% } else { %>
+            <span style="color:var(--adm-border);font-size:.78rem">-</span>
+            <% } %>
           </td>
           <td>
-            <form action="/admin/blog/<%= post.id %>/delete" method="POST"
-              onsubmit="return confirm('Xóa bài này?')">
-              <button type="submit" class="btn btn-sm" style="background:#ef4444;color:#fff;border:none">🗑 Xóa</button>
-            </form>
+            <div style="display:flex;gap:5px">
+              <a href="/admin/blog/<%= post.id %>/edit" class="adm-btn adm-btn-outline adm-btn-sm" style="font-size:.7rem">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Sua
+              </a>
+              <a href="/blog/<%= post.slug %>?lang=vi" target="_blank" rel="noopener" class="adm-btn adm-btn-ghost adm-btn-icon sm" title="Xem bai viet">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </a>
+              <form action="/admin/blog/<%= post.id %>/delete" method="POST" onsubmit="return confirm('Xoa bai viet nay?')">
+                <button type="submit" class="adm-btn adm-btn-danger adm-btn-icon sm" title="Xoa">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                </button>
+              </form>
+            </div>
           </td>
         </tr>
         <% }) %>
@@ -100,5 +145,21 @@
   </div>
   <% } %>
 </div>
+
+<script>
+function toggleForm() {
+  const body = document.getElementById('addForm');
+  const header = document.getElementById('formHeader');
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  header.classList.toggle('open', !open);
+}
+document.getElementById('blogAddForm')?.addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg> Dang dang bai...';
+});
+</script>
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 
 <%- include('../partials/admin-footer') %>

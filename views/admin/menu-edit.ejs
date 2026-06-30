@@ -1,0 +1,119 @@
+<%- include('../partials/admin-header', { pageTitle: 'Menu' }) %>
+
+<div class="adm-page-header">
+  <div>
+    <h1 class="adm-page-title">Sửa món</h1>
+    <p class="adm-page-subtitle"><%= item.name_vi %></p>
+  </div>
+  <a href="/admin/menu" class="adm-btn adm-btn-outline adm-btn-sm">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Quay lại Menu
+  </a>
+</div>
+
+<div class="adm-card">
+  <div class="adm-card-header">
+    <span class="adm-card-title">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Thông tin món
+    </span>
+  </div>
+  <div class="adm-card-body">
+    <!-- Hình ảnh hiện tại -->
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--adm-border)">
+      <% const hasImg = item.image && item.image !== '/images/menu/default.jpg'; %>
+      <div style="position:relative;width:84px;height:84px;flex-shrink:0">
+        <% if (hasImg) { %>
+        <img src="<%= item.image %>" alt="<%= item.name_vi %>" style="width:84px;height:84px;object-fit:cover;border-radius:10px;border:1px solid var(--adm-border);display:block">
+        <% } else { %>
+        <div style="width:84px;height:84px;border-radius:10px;background:#F9FAFB;border:1.5px dashed #D1D5DB;display:flex;align-items:center;justify-content:center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <% } %>
+      </div>
+      <div>
+        <label for="imgUpEdit" class="adm-btn adm-btn-outline adm-btn-sm" style="cursor:pointer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <%= hasImg ? 'Thay hình khác' : 'Tải hình lên' %>
+        </label>
+        <form id="imgEditForm" action="/admin/menu/<%= item.id %>/image" method="POST" enctype="multipart/form-data" style="display:none">
+          <input type="file" id="imgUpEdit" name="image" accept="image/jpeg,image/png,image/webp,image/gif"
+            onchange="document.getElementById('imgEditForm').submit()">
+        </form>
+        <p style="font-size:.72rem;color:var(--adm-text-3);margin-top:6px">JPG, PNG, WEBP, GIF — tối đa 5MB</p>
+      </div>
+    </div>
+
+    <form action="/admin/menu/<%= item.id %>/edit" method="POST" id="menuEditForm">
+      <div class="adm-form-row">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Tên món (Tiếng Việt) <span class="adm-required">*</span></label>
+          <input class="adm-input" type="text" name="name_vi" required value="<%= item.name_vi %>">
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Name (English) <span class="adm-required">*</span></label>
+          <input class="adm-input" type="text" name="name_en" required value="<%= item.name_en %>">
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Mô tả (VI)</label>
+          <textarea class="adm-textarea" name="desc_vi" rows="2"><%= item.desc_vi %></textarea>
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Description (EN)</label>
+          <textarea class="adm-textarea" name="desc_en" rows="2"><%= item.desc_en %></textarea>
+        </div>
+      </div>
+      <div class="adm-form-row">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Tag nhãn (VI) <span class="adm-label-opt">tuỳ chọn</span></label>
+          <input class="adm-input" type="text" name="tag_vi" value="<%= item.tag_vi || '' %>">
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Tag label (EN) <span class="adm-label-opt">optional</span></label>
+          <input class="adm-input" type="text" name="tag_en" value="<%= item.tag_en || '' %>">
+        </div>
+      </div>
+      <div class="adm-form-row-3">
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Giá (VNĐ) <span class="adm-required">*</span></label>
+          <input class="adm-input" type="number" name="price" required min="1000" step="1000" value="<%= item.price %>">
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Danh mục <span class="adm-required">*</span></label>
+          <select class="adm-select" name="category" required>
+            <% categories.forEach(c => { %>
+            <option value="<%= c.id %>" <%= item.category === c.id ? 'selected' : '' %>><%= c.name_vi %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="adm-form-group" style="margin:0">
+          <label class="adm-label">Hiển thị nổi bật</label>
+          <select class="adm-select" name="featured">
+            <option value="" <%= !item.featured ? 'selected' : '' %>>Không</option>
+            <option value="on" <%= item.featured ? 'selected' : '' %>>Có (hiện trang chủ)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid var(--adm-border);margin-top:8px">
+        <button type="submit" class="adm-btn adm-btn-accent" id="submitBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Lưu thay đổi & Sync GitHub
+        </button>
+        <a href="/admin/menu" class="adm-btn adm-btn-ghost">Hủy</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('menuEditForm')?.addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation:spin 1s linear infinite"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg> Đang lưu...';
+});
+</script>
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+
+<%- include('../partials/admin-footer') %>
